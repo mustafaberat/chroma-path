@@ -1,0 +1,30 @@
+<en-US>
+First release. Connect every color and fill the board.
+</en-US>
+<es-419>
+Primera versión. Conecta cada color y llena el tablero.
+</es-419>
+<pt-BR>
+Primeira versão. Ligue cada cor e preencha o tabuleiro.
+</pt-BR>
+<zh-CN>
+首次发布。连上每一种颜色，填满棋盘。
+</zh-CN>
+<ja-JP>
+初回リリース。すべての色をつないでマスを埋めよう。
+</ja-JP>
+<de-DE>
+Erste Version. Verbinde jede Farbe und fülle das Feld.
+</de-DE>
+<fr-FR>
+Première version. Relie chaque couleur et remplis la grille.
+</fr-FR>
+<ko-KR>
+첫 출시. 모든 색을 연결하고 판을 채우세요.
+</ko-KR>
+<it-IT>
+Prima versione. Collega ogni colore e riempi la griglia.
+</it-IT>
+<tr-TR>
+İlk sürüm. Her rengi bağla ve tahtayı doldur.
+</tr-TR>

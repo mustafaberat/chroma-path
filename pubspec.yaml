@@ -1,0 +1,30 @@
+name: color_links
+description: Connect every color. A calm grid puzzle.
+publish_to: 'none'
+# vX.Y.Z+CODE — X Play yüklemesi, Y stable, Z her commit.
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.13.2
+
+dependencies:
+  audioplayers: ^6.5.1
+  firebase_analytics: ^13.0.1
+  firebase_core: ^5.1.0
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.20.3
+  package_info_plus: ^10.2.2
+  shared_preferences: ^2.5.6
+  url_launcher: ^6.3.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+  generate: true
