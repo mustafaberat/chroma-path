@@ -19,8 +19,8 @@ import 'services/audio_service.dart';
 import 'services/progress_store.dart';
 import 'services/settings_service.dart';
 
-class ColorLinksApp extends StatelessWidget {
-  const ColorLinksApp({required this.services, this.home, super.key});
+class ChromaPathApp extends StatelessWidget {
+  const ChromaPathApp({required this.services, this.home, super.key});
 
   final AppServices services;
   final Widget? home;
@@ -154,7 +154,7 @@ Future<void> bootstrap() async {
   final progress = ProgressStore(settings!.prefs);
   final audio = AudioService();
   await audio.prepare();
-  runApp(ColorLinksApp(services: AppServices(settings: settings!, progress: progress, audio: audio)));
+  runApp(ChromaPathApp(services: AppServices(settings: settings!, progress: progress, audio: audio)));
   unawaited(AnalyticsService.instance.start(settings!.prefs).catchError((Object _) {}));
 }
 

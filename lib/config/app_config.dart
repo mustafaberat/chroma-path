@@ -1,8 +1,8 @@
 abstract final class AppIdentity {
-  static const String appName = 'Color Links';
+  static const String appName = 'ChromaPath: Connect Puzzle';
   static const String developer = 'ARU Soft';
-  static const String packageId = 'com.arusoft.colorlinks';
-  static const String privacyUrl = 'https://arusoft.vercel.app/privacy/color-links';
+  static const String packageId = 'com.arusoft.chromapath';
+  static const String privacyUrl = 'https://arusoft.vercel.app/privacy/chroma-path';
 }
 
 abstract final class AppRoutes {

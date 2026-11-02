@@ -1,9 +1,9 @@
-# Color Links
+# ChromaPath: Connect Puzzle
 
 Calm grid puzzle. Join each pair of matching dots and fill every cell. Paths stay on the grid lines, and they cannot cross. Portrait only.
 
-Package: `com.arusoft.colorlinks`  
-Firebase project id: `arusoft-color-links`
+Package: `com.arusoft.chromapath`  
+Firebase project id: `arusoft-chroma-path`
 
 ```bash
 flutter test

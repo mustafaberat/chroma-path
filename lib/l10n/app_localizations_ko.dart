@@ -10,7 +10,7 @@ class AppLocalizationsKo extends AppLocalizations {
   AppLocalizationsKo([String locale = 'ko']) : super(locale);
 
   @override
-  String get appTitle => 'Color Links';
+  String get appTitle => 'ChromaPath: Connect Puzzle';
 
   @override
   String get homeTagline => '모든 색을 연결하세요.';

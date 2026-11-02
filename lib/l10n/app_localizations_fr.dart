@@ -10,7 +10,7 @@ class AppLocalizationsFr extends AppLocalizations {
   AppLocalizationsFr([String locale = 'fr']) : super(locale);
 
   @override
-  String get appTitle => 'Color Links';
+  String get appTitle => 'ChromaPath: Connect Puzzle';
 
   @override
   String get homeTagline => 'Relie chaque couleur.';

@@ -1,4 +1,4 @@
-package com.arusoft.colorlinks
+package com.arusoft.chromapath
 
 import io.flutter.embedding.android.FlutterActivity
 

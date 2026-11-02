@@ -1,6 +1,6 @@
-import 'package:color_links/game/levels.dart';
-import 'package:color_links/game/model.dart';
-import 'package:color_links/game/rules.dart';
+import 'package:chroma_path/game/levels.dart';
+import 'package:chroma_path/game/model.dart';
+import 'package:chroma_path/game/rules.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

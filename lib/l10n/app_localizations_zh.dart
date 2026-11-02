@@ -10,7 +10,7 @@ class AppLocalizationsZh extends AppLocalizations {
   AppLocalizationsZh([String locale = 'zh']) : super(locale);
 
   @override
-  String get appTitle => 'Color Links';
+  String get appTitle => 'ChromaPath: Connect Puzzle';
 
   @override
   String get homeTagline => '连上每一种颜色。';

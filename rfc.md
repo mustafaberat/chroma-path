@@ -1,11 +1,11 @@
-# Color Links
+# ChromaPath: Connect Puzzle
 
 
-Act as a senior mobile game developer, game designer, and UI/UX designer. Build a complete, polished, production-quality puzzle game called **Color Links**.
+Act as a senior mobile game developer, game designer, and UI/UX designer. Build a complete, polished, production-quality puzzle game called **ChromaPath: Connect Puzzle**.
 
 ## 1. Game Concept
 
-Color Links is a relaxing but challenging grid-based puzzle game.
+ChromaPath: Connect Puzzle is a relaxing but challenging grid-based puzzle game.
 
 The objective is simple:
 
@@ -99,7 +99,7 @@ Avoid excessive visual effects. Keep the board as the main focus.
 
 Create a polished main menu containing:
 
-- Game logo: COLOR LINKS
+- Game logo: CHROMAPATH: CONNECT PUZZLE
 - Play button
 - Level selection
 - Settings

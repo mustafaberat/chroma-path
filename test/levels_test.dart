@@ -1,11 +1,11 @@
-import 'package:color_links/game/bands.dart';
-import 'package:color_links/game/generator.dart';
-import 'package:color_links/game/hint.dart';
-import 'package:color_links/game/levels.dart';
-import 'package:color_links/game/model.dart';
-import 'package:color_links/game/rules.dart';
-import 'package:color_links/game/solver.dart';
-import 'package:color_links/game/validator.dart';
+import 'package:chroma_path/game/bands.dart';
+import 'package:chroma_path/game/generator.dart';
+import 'package:chroma_path/game/hint.dart';
+import 'package:chroma_path/game/levels.dart';
+import 'package:chroma_path/game/model.dart';
+import 'package:chroma_path/game/rules.dart';
+import 'package:chroma_path/game/solver.dart';
+import 'package:chroma_path/game/validator.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

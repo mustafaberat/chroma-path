@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:color_links/game/generator.dart';
+import 'package:chroma_path/game/generator.dart';
 
 void main() {
   final levels = PuzzleGenerator.buildAll();

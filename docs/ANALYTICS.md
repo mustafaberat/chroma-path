@@ -1,6 +1,6 @@
-# Color Links — Firebase Analytics
+# ChromaPath: Connect Puzzle — Firebase Analytics
 
-Android paket adı: `com.arusoft.colorlinks`. Firebase proje kimliği: `arusoft-color-links`.
+Android paket adı: `com.arusoft.chromapath`. Firebase proje kimliği: `arusoft-chroma-path`.
 
 `google-services.json` yokken oyun açılır. Analytics sessizce kapalı kalır. Sahte dosya yazılmaz.
 
@@ -8,8 +8,8 @@ Ekranlar `FirebaseAnalytics` çağırmaz. Olaylar `lib/analytics/analytics_servi
 
 ## Kurulum
 
-1. Firebase Console → proje `arusoft-color-links` (görünen ad: Color Links).
-2. Android uygulamasını `com.arusoft.colorlinks` paket adıyla ekle.
+1. Firebase Console → proje `arusoft-chroma-path` (görünen ad: ChromaPath: Connect Puzzle).
+2. Android uygulamasını `com.arusoft.chromapath` paket adıyla ekle.
 3. İndirilen `google-services.json` dosyasını `android/app/` altına koy.
 4. Gradle eklentisi dosya varsa uygulanır. Dosya yokken derleme bozulmaz.
 

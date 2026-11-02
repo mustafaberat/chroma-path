@@ -1,4 +1,4 @@
--keep class com.arusoft.colorlinks.** { *; }
+-keep class com.arusoft.chromapath.** { *; }
 
 # shared_preferences_android calls its Kotlin API from Dart over JNI.
 # R8 can't see those calls and strips the methods.

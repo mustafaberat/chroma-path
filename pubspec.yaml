@@ -1,4 +1,4 @@
-name: color_links
+name: chroma_path
 description: Connect every color. A calm grid puzzle.
 publish_to: 'none'
 # vX.Y.Z+CODE — X Play yüklemesi, Y stable, Z her commit.
