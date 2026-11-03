@@ -186,7 +186,7 @@ class _PlayScreenState extends State<PlayScreen> with SingleTickerProviderStateM
                           title: l10n.levelClear,
                           stars: _earned,
                           nextLabel: widget.levelIndex + 1 >= Levels.all.length ? l10n.levels : l10n.nextLevel,
-                          onNext: _next,
+                          onNext: () => unawaited(_next()),
                         ),
                       ),
                     ),
@@ -363,7 +363,9 @@ class _PlayScreenState extends State<PlayScreen> with SingleTickerProviderStateM
     unawaited(_progress?.markComplete(widget.levelIndex, stars));
   }
 
-  void _next() {
+  Future<void> _next() async {
+    await AppScope.read(context).ads.showInterstitial();
+    if (!mounted) return;
     final next = widget.levelIndex + 1;
     if (next >= Levels.all.length) {
       Navigator.of(context).pop();

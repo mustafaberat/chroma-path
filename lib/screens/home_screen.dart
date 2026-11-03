@@ -7,6 +7,7 @@ import '../config/app_config.dart';
 import '../config/tokens.dart';
 import '../game/levels.dart';
 import '../l10n/app_localizations.dart';
+import '../widgets/banner_slot.dart';
 import '../widgets/flow_board.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -163,6 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
+              const BannerSlot(),
             ],
           ),
         ),

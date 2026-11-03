@@ -1,0 +1,14 @@
+---
+description: ChromaPath uses Google test ads until a real AdMob unit exists.
+alwaysApply: true
+---
+
+# Test ads
+
+Keep Google sample ads. Do not remove them and do not swap in a real unit until the user asks.
+
+- App id: `ca-app-pub-3940256099942544~3347511713`
+- Banner: `ca-app-pub-3940256099942544/6300978111`
+- Interstitial: `ca-app-pub-3940256099942544/1033173712`
+
+Banner sits on the home screen. The interstitial shows after a cleared board. Web and tests stay ad-free.

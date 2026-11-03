@@ -15,6 +15,7 @@ import 'screens/how_to_play_screen.dart';
 import 'screens/levels_screen.dart';
 import 'screens/play_screen.dart';
 import 'screens/settings_screen.dart';
+import 'services/ad_service.dart';
 import 'services/audio_service.dart';
 import 'services/progress_store.dart';
 import 'services/settings_service.dart';
@@ -154,6 +155,7 @@ Future<void> bootstrap() async {
   final progress = ProgressStore(settings!.prefs);
   final audio = AudioService();
   await audio.prepare();
+  AdService.instance.initialize();
   runApp(ChromaPathApp(services: AppServices(settings: settings!, progress: progress, audio: audio)));
   unawaited(AnalyticsService.instance.start(settings!.prefs).catchError((Object _) {}));
 }

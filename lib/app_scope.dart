@@ -1,15 +1,18 @@
 import 'package:flutter/widgets.dart';
 
+import 'services/ad_service.dart';
 import 'services/audio_service.dart';
 import 'services/progress_store.dart';
 import 'services/settings_service.dart';
 
 class AppServices {
-  AppServices({required this.settings, required this.progress, required this.audio});
+  AppServices({required this.settings, required this.progress, required this.audio, AdService? ads})
+    : ads = ads ?? AdService.instance;
 
   final SettingsService settings;
   final ProgressStore progress;
   final AudioService audio;
+  final AdService ads;
 }
 
 class AppScope extends InheritedNotifier<SettingsService> {

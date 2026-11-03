@@ -1,16 +1,16 @@
 # ChromaPath: Connect Puzzle — Firebase Analytics
 
-Android paket adı: `com.arusoft.chromapath`. Firebase proje kimliği: `arusoft-chroma-path`.
+Android paket adı: `com.arusoft.chromapath`. Firebase proje kimliği: `arusoft-chroma-path`. Görünen ad: ChromaPath.
 
-`google-services.json` yokken oyun açılır. Analytics sessizce kapalı kalır. Sahte dosya yazılmaz.
+`google-services.json` `android/app/` altında, `GoogleService-Info.plist` `ios/Runner/` altında. İkisi de Firebase’den indirildi. Dosya silinirse oyun yine açılır ve Analytics sessizce kapanır.
 
 Ekranlar `FirebaseAnalytics` çağırmaz. Olaylar `lib/analytics/analytics_service.dart` üzerinden gider.
 
 ## Kurulum
 
-1. Firebase Console → proje `arusoft-chroma-path` (görünen ad: ChromaPath: Connect Puzzle).
-2. Android uygulamasını `com.arusoft.chromapath` paket adıyla ekle.
-3. İndirilen `google-services.json` dosyasını `android/app/` altına koy.
+1. Firebase Console → proje `arusoft-chroma-path` (görünen ad: ChromaPath). Proje ve Android ile iOS uygulamaları açık.
+2. Android paket adı ve iOS bundle: `com.arusoft.chromapath`.
+3. `google-services.json` ve `GoogleService-Info.plist` yerinde.
 4. Gradle eklentisi dosya varsa uygulanır. Dosya yokken derleme bozulmaz.
 
 ## Olaylar
