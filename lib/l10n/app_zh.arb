@@ -13,6 +13,7 @@
   "progressLabel": "第 {current} 关，共 {total} 关",
   "nextLevel": "下一关",
   "levelClear": "棋盘已填满",
+  "levelCompliment": "看起来很好吃！",
   "allClear": "所有关卡都已完成",
   "playAgain": "再玩一次",
   "undo": "撤销",

@@ -13,6 +13,7 @@
   "progressLabel": "レベル {current} / {total}",
   "nextLevel": "次のレベル",
   "levelClear": "埋まりました",
+  "levelCompliment": "おいしそう！",
   "allClear": "すべてのレベルが終わりました",
   "playAgain": "もう一度",
   "undo": "元に戻す",

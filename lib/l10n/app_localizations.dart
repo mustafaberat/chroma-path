@@ -192,6 +192,12 @@ abstract class AppLocalizations {
   /// **'Waffle topped!'**
   String get levelClear;
 
+  /// No description provided for @levelCompliment.
+  ///
+  /// In en, this message translates to:
+  /// **'Looks delicious!'**
+  String get levelCompliment;
+
   /// No description provided for @allClear.
   ///
   /// In en, this message translates to:

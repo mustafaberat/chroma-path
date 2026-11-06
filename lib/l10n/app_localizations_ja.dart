@@ -53,6 +53,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get levelClear => '埋まりました';
 
   @override
+  String get levelCompliment => 'おいしそう！';
+
+  @override
   String get allClear => 'すべてのレベルが終わりました';
 
   @override

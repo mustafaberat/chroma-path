@@ -54,6 +54,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get levelClear => 'Feld gefüllt';
 
   @override
+  String get levelCompliment => 'Sieht lecker aus!';
+
+  @override
   String get allClear => 'Jedes Level ist gefüllt';
 
   @override

@@ -53,6 +53,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get levelClear => '판을 채웠습니다';
 
   @override
+  String get levelCompliment => '맛있어 보여요!';
+
+  @override
   String get allClear => '모든 레벨을 채웠습니다';
 
   @override

@@ -9,6 +9,7 @@ import '../config/app_config.dart';
 import '../config/tokens.dart';
 import '../game/model.dart';
 import '../l10n/app_localizations.dart';
+import '../widgets/chef_mascot.dart';
 import '../widgets/flow_board.dart';
 
 class HowToPlayScreen extends StatefulWidget {
@@ -73,26 +74,42 @@ class _HowToPlayScreenState extends State<HowToPlayScreen> with SingleTickerProv
               Expanded(
                 child: Center(
                   child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 360),
-                    child: AnimatedBuilder(
-                      animation: _loop,
-                      builder: (context, _) {
-                        final frame = reduce ? _still() : _pose(_loop.value);
-                        return FlowBoardView(
-                          board: frame.board,
-                          fingerCell: frame.finger,
-                          interactive: false,
-                          label: l10n.boardLabel,
-                          onDown: (_) {},
-                          onMove: (_) {},
-                          onUp: () {},
-                        );
-                      },
+                    constraints: const BoxConstraints(maxWidth: 380),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const ChefMascot(size: 120),
+                        const SizedBox(height: 32),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: AnimatedBuilder(
+                            animation: _loop,
+                            builder: (context, _) {
+                              final frame = reduce ? _still() : _pose(_loop.value);
+                              return SizedBox(
+                                height: 180,
+                                child: FlowBoardView(
+                                  board: frame.board,
+                                  fingerCell: frame.finger,
+                                  interactive: false,
+                                  label: l10n.boardLabel,
+                                  onDown: (_) {},
+                                  onMove: (_) {},
+                                  onUp: () {},
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
               ),
-              Text(l10n.howToLine, textAlign: TextAlign.center, style: theme.titleLarge),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Text(l10n.howToLine, textAlign: TextAlign.center, style: theme.titleMedium),
+              ),
               const SizedBox(height: AppDimens.gapL),
               SizedBox(
                 width: double.infinity,
