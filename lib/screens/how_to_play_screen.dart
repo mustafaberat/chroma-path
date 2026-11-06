@@ -25,13 +25,13 @@ class _HowToPlayScreenState extends State<HowToPlayScreen> with SingleTickerProv
     id: 0,
     size: 4,
     flows: const [
-      [0, 1, 2, 3, 7, 6, 5, 4],
-      [8, 9, 10, 11, 15, 14, 13, 12],
+      [0, 1],
+      [15, 14],
     ],
   );
 
   late final AnimationController _loop =
-      AnimationController(vsync: this, duration: const Duration(milliseconds: 6400));
+      AnimationController(vsync: this, duration: const Duration(milliseconds: 3200));
 
   @override
   void initState() {
@@ -67,13 +67,9 @@ class _HowToPlayScreenState extends State<HowToPlayScreen> with SingleTickerProv
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(AppDimens.page, 8, AppDimens.page, AppDimens.page),
+          padding: const EdgeInsets.fromLTRB(AppDimens.page, AppDimens.page, AppDimens.page, AppDimens.page),
           child: Column(
             children: [
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(onPressed: _close, child: Text(l10n.skip)),
-              ),
               Expanded(
                 child: Center(
                   child: ConstrainedBox(
@@ -128,25 +124,32 @@ class _HowToPlayScreenState extends State<HowToPlayScreen> with SingleTickerProv
 
   _Frame _still() {
     return _Frame(
-      board: _shown(first: _demo.flows[0].length, second: 1),
-      finger: _demo.flows[1].first,
+      board: _shown(first: _demo.flows[0].length, second: _demo.flows[1].length),
+      finger: null,
     );
   }
 
   _Frame _pose(double t) {
     final first = _demo.flows[0];
     final second = _demo.flows[1];
-    if (t < 0.08) return _Frame(board: _shown(first: 1, second: 0), finger: first.first);
-    if (t < 0.42) {
-      final count = 1 + ((t - 0.08) / 0.34 * (first.length - 1)).floor().clamp(0, first.length - 1);
+    
+    if (t < 0.05) return _Frame(board: _shown(first: 1, second: 0), finger: first.first);
+    if (t < 0.25) {
+      final count = 1 + ((t - 0.05) / 0.2 * (first.length - 1)).floor().clamp(0, first.length - 1);
       return _Frame(board: _shown(first: count, second: 0), finger: first[count - 1]);
     }
-    if (t < 0.5) return _Frame(board: _shown(first: first.length, second: 1), finger: second.first);
-    if (t < 0.86) {
-      final count = 1 + ((t - 0.5) / 0.36 * (second.length - 1)).floor().clamp(0, second.length - 1);
-      return _Frame(board: _shown(first: first.length, second: count), finger: second[count - 1]);
+    if (t < 0.35) return _Frame(board: _shown(first: first.length, second: 0), finger: null);
+    
+    if (t < 0.4) return _Frame(board: _shown(first: 0, second: 1), finger: second.first);
+    if (t < 0.6) {
+      final count = 1 + ((t - 0.4) / 0.2 * (second.length - 1)).floor().clamp(0, second.length - 1);
+      return _Frame(board: _shown(first: 0, second: count), finger: second[count - 1]);
     }
-    return _Frame(board: _shown(first: first.length, second: second.length), finger: second.last);
+    if (t < 0.7) return _Frame(board: _shown(first: 0, second: second.length), finger: null);
+    
+    if (t < 0.8) return _Frame(board: _shown(first: 0, second: 0), finger: null);
+    
+    return _Frame(board: _shown(first: 0, second: 0), finger: null);
   }
 
   Board _shown({required int first, required int second}) {
@@ -162,8 +165,8 @@ class _HowToPlayScreenState extends State<HowToPlayScreen> with SingleTickerProv
 }
 
 class _Frame {
-  const _Frame({required this.board, required this.finger});
+  const _Frame({required this.board, this.finger});
 
   final Board board;
-  final int finger;
+  final int? finger;
 }

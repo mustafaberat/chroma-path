@@ -100,33 +100,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ),
                         ],
                       ),
-                      _Section(l10n.settingsAccessibility),
-                      _Card(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 16, 20, 18),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(l10n.settingsReduceMotion, style: theme.titleMedium),
-                                const SizedBox(height: 12),
-                                Wrap(
-                                  spacing: 10,
-                                  runSpacing: 8,
-                                  children: [
-                                    for (final choice in ReduceMotionPref.values)
-                                      _MotionChip(
-                                        label: _motionLabel(l10n, choice),
-                                        selected: settings.reduceMotion == choice,
-                                        onSelected: () => settings.setReduceMotion(choice),
-                                      ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
                       _Section(l10n.settingsGame),
                       _Card(
                         children: [
@@ -163,12 +136,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
     );
   }
-
-  String _motionLabel(AppLocalizations l10n, ReduceMotionPref choice) => switch (choice) {
-        ReduceMotionPref.system => l10n.motionSystem,
-        ReduceMotionPref.on => l10n.motionOn,
-        ReduceMotionPref.off => l10n.motionOff,
-      };
 
   Future<void> _pickLanguage(BuildContext context) async {
     final settings = AppScope.read(context).settings;
@@ -374,37 +341,3 @@ class _SprinklePainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
-class _MotionChip extends StatelessWidget {
-  const _MotionChip({required this.label, required this.selected, required this.onSelected});
-
-  final String label;
-  final bool selected;
-  final VoidCallback onSelected;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onSelected,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-        decoration: BoxDecoration(
-          color: selected ? AppColors.gold : AppColors.blush,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: selected ? AppColors.gold : AppColors.line,
-            width: selected ? 2 : 1,
-          ),
-        ),
-        child: Text(
-          label,
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: selected ? FontWeight.w700 : FontWeight.w600,
-            color: selected ? AppColors.ink : AppColors.muted,
-          ),
-        ),
-      ),
-    );
-  }
-}

@@ -28,7 +28,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get howToPlay => 'How to play';
 
   @override
-  String get howToLine => 'Drag between two matching dots and fill the board.';
+  String get howToLine => 'Connect two matching dots!';
 
   @override
   String get skip => 'Skip';
@@ -47,13 +47,13 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get nextLevel => 'Next level';
+  String get nextLevel => 'Next serving';
 
   @override
-  String get levelClear => 'Board filled';
+  String get levelClear => 'Waffle topped!';
 
   @override
-  String get allClear => 'Every level is filled';
+  String get allClear => 'All waffles topped!';
 
   @override
   String get playAgain => 'Play again';

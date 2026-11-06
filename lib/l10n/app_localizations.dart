@@ -153,7 +153,7 @@ abstract class AppLocalizations {
   /// No description provided for @howToLine.
   ///
   /// In en, this message translates to:
-  /// **'Drag between two matching dots and fill the board.'**
+  /// **'Connect two matching dots!'**
   String get howToLine;
 
   /// No description provided for @skip.
@@ -183,19 +183,19 @@ abstract class AppLocalizations {
   /// No description provided for @nextLevel.
   ///
   /// In en, this message translates to:
-  /// **'Next level'**
+  /// **'Next serving'**
   String get nextLevel;
 
   /// No description provided for @levelClear.
   ///
   /// In en, this message translates to:
-  /// **'Board filled'**
+  /// **'Waffle topped!'**
   String get levelClear;
 
   /// No description provided for @allClear.
   ///
   /// In en, this message translates to:
-  /// **'Every level is filled'**
+  /// **'All waffles topped!'**
   String get allClear;
 
   /// No description provided for @playAgain.

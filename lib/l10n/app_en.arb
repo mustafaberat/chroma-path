@@ -6,7 +6,7 @@
   "levels": "Levels",
   "settings": "Settings",
   "howToPlay": "How to play",
-  "howToLine": "Drag between two matching dots and fill the board.",
+  "howToLine": "Connect two matching dots!",
   "skip": "Skip",
   "back": "Back",
   "levelLabel": "Level {level}",
@@ -18,9 +18,9 @@
       "total": { "type": "int" }
     }
   },
-  "nextLevel": "Next level",
-  "levelClear": "Board filled",
-  "allClear": "Every level is filled",
+  "nextLevel": "Next serving",
+  "levelClear": "Waffle topped!",
+  "allClear": "All waffles topped!",
   "playAgain": "Play again",
   "undo": "Undo",
   "reset": "Reset",

@@ -163,27 +163,16 @@ class _LevelTile extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       if (unlocked) ...[
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                          decoration: BoxDecoration(
-                            gradient: current
-                                ? const LinearGradient(
-                                    colors: [AppColors.berry, Color(0xFFE86B86)],
-                                  )
-                                : null,
-                            color: current ? null : AppColors.waffle.withValues(alpha: 0.12),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Text(
-                            '$number',
-                            style: theme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.w800,
-                              color: current ? AppColors.onAccent : AppColors.ink,
-                            ),
+                        Text(
+                          '$number',
+                          style: theme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w800,
+                            fontSize: current ? 22 : 16,
+                            color: current ? AppColors.berry : AppColors.ink,
                           ),
                         ),
                       ] else
-                        const Icon(Icons.lock_rounded, color: AppColors.faint, size: 20),
+                        Icon(Icons.lock_rounded, color: AppColors.faint.withValues(alpha: 0.5), size: 20),
                       const SizedBox(height: 4),
                       if (stars > 0)
                         Row(

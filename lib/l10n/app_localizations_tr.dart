@@ -28,7 +28,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get howToPlay => 'Nasıl oynanır';
 
   @override
-  String get howToLine => 'Aynı iki nokta arasında sürükle ve tahtayı doldur.';
+  String get howToLine => 'Aynı renkteki iki noktayı birleştir!';
 
   @override
   String get skip => 'Geç';
@@ -47,13 +47,13 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get nextLevel => 'Sonraki seviye';
+  String get nextLevel => 'Servis';
 
   @override
-  String get levelClear => 'Tahta doldu';
+  String get levelClear => 'Waffle hazır!';
 
   @override
-  String get allClear => 'Tüm seviyeler doldu';
+  String get allClear => 'Tüm waffle\'lar servise hazır!';
 
   @override
   String get playAgain => 'Tekrar oyna';

@@ -56,7 +56,7 @@ class SettingsService extends ChangeNotifier {
     final lang = prefs.getString(PrefsKeys.language);
     _language = supportedLanguages.contains(lang) ? lang : null;
     _sound = prefs.getBool(PrefsKeys.sound) ?? true;
-    _music = prefs.getBool(PrefsKeys.music) ?? true;
+    _music = prefs.getBool(PrefsKeys.music) ?? false;
     _haptics = prefs.getBool(PrefsKeys.haptics) ?? true;
     _reduceMotion =
         _byName(ReduceMotionPref.values, prefs.getString(PrefsKeys.reduceMotion)) ?? ReduceMotionPref.system;
