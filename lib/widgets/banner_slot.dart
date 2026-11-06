@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
+import '../config/tokens.dart';
 import '../services/ad_service.dart';
 
 class BannerSlot extends StatelessWidget {
@@ -11,11 +12,19 @@ class BannerSlot extends StatelessWidget {
     return ValueListenableBuilder<BannerAd?>(
       valueListenable: AdService.instance.banner,
       builder: (context, ad, _) {
-        if (ad == null) return const SizedBox(height: 50);
-        return SizedBox(
-          height: ad.size.height.toDouble(),
-          width: ad.size.width.toDouble(),
-          child: AdWidget(ad: ad),
+        if (ad == null) {
+          return const ColoredBox(
+            color: AppColors.background,
+            child: SizedBox(height: 50, width: double.infinity),
+          );
+        }
+        return ColoredBox(
+          color: AppColors.background,
+          child: SizedBox(
+            height: ad.size.height.toDouble(),
+            width: ad.size.width.toDouble(),
+            child: AdWidget(ad: ad),
+          ),
         );
       },
     );

@@ -121,40 +121,47 @@ class _LevelTile extends StatelessWidget {
       enabled: unlocked,
       label: label,
       excludeSemantics: true,
-      child: Material(
-        color: unlocked ? AppColors.surface : AppColors.board,
-        borderRadius: BorderRadius.circular(16),
-        child: InkWell(
-          onTap: onTap,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
-          child: Ink(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: current ? AppColors.blue : AppColors.line, width: current ? 2 : 1),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (unlocked)
-                  Text('$number', style: theme.titleMedium)
-                else
-                  const Icon(Icons.lock_rounded, color: AppColors.faint, size: 20),
-                const SizedBox(height: 4),
-                if (stars > 0)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      for (var i = 0; i < 3; i++)
-                        Icon(
-                          i < stars ? Icons.star_rounded : Icons.star_border_rounded,
-                          size: 12,
-                          color: i < stars ? AppColors.yellow : AppColors.faint,
-                        ),
-                    ],
-                  )
-                else
-                  const SizedBox(height: 12),
-              ],
+          boxShadow: const [BoxShadow(color: Color(0x146B4632), blurRadius: 8, offset: Offset(0, 3))],
+        ),
+        child: Material(
+          color: AppColors.transparent,
+          borderRadius: BorderRadius.circular(16),
+          clipBehavior: Clip.antiAlias,
+          child: InkWell(
+            onTap: onTap,
+            child: Ink(
+              decoration: BoxDecoration(
+                color: unlocked ? AppColors.surface : AppColors.board,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: current ? AppColors.berry : AppColors.line, width: current ? 2.4 : 1),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (unlocked)
+                    Text('$number', style: theme.titleMedium)
+                  else
+                    const Icon(Icons.lock_rounded, color: AppColors.faint, size: 20),
+                  const SizedBox(height: 4),
+                  if (stars > 0)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        for (var i = 0; i < 3; i++)
+                          Icon(
+                            i < stars ? Icons.star_rounded : Icons.star_border_rounded,
+                            size: 12,
+                            color: i < stars ? AppColors.yellow : AppColors.faint,
+                          ),
+                      ],
+                    )
+                  else
+                    const SizedBox(height: 12),
+                ],
+              ),
             ),
           ),
         ),

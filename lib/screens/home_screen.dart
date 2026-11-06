@@ -67,10 +67,21 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 for (final color in Palette.colors)
                   Container(
-                    width: 12,
-                    height: 12,
-                    margin: const EdgeInsets.only(right: 6),
-                    decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+                    width: 16,
+                    height: 16,
+                    margin: const EdgeInsets.only(right: 7),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: RadialGradient(
+                        center: const Alignment(-0.35, -0.4),
+                        radius: 0.9,
+                        colors: [const Color(0xFFFFFBF6), color],
+                        stops: const [0.05, 0.72],
+                      ),
+                      boxShadow: [
+                        BoxShadow(color: color.withValues(alpha: 0.28), blurRadius: 4, offset: const Offset(0, 2)),
+                      ],
+                    ),
                   ),
               ],
             ),
@@ -88,9 +99,9 @@ class _HomeScreenState extends State<HomeScreen> {
               borderRadius: BorderRadius.circular(99),
               child: LinearProgressIndicator(
                 value: fraction,
-                minHeight: 8,
-                backgroundColor: AppColors.line,
-                color: AppColors.blue,
+                minHeight: 10,
+                backgroundColor: AppColors.blush,
+                color: AppColors.berry,
               ),
             ),
             const SizedBox(height: AppDimens.gapL),
@@ -155,11 +166,30 @@ class _HomeScreenState extends State<HomeScreen> {
                               Expanded(child: copy),
                             ],
                           )
-                        : Column(
-                            children: [
-                              Expanded(child: Center(child: board)),
-                              copy,
-                            ],
+                        : LayoutBuilder(
+                            builder: (context, constraints) {
+                              var side = constraints.maxHeight * 0.42;
+                              if (side < 140) side = 140;
+                              if (side > constraints.maxWidth) side = constraints.maxWidth;
+                              return SingleChildScrollView(
+                                child: ConstrainedBox(
+                                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      SizedBox(
+                                        width: double.infinity,
+                                        height: side,
+                                        child: Center(
+                                          child: SizedBox(width: side, height: side, child: board),
+                                        ),
+                                      ),
+                                      copy,
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                   ),
                 ),

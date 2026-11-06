@@ -107,7 +107,9 @@ class _PlayScreenState extends State<PlayScreen> with SingleTickerProviderStateM
     final theme = Theme.of(context).textTheme;
     final wide = MediaQuery.sizeOf(context).width >= AppDimens.wide;
     final hintColor = _colorOf(_hintCell);
-    final finger = _strokeColor == null || _board.paths[_strokeColor!].isEmpty ? null : _board.paths[_strokeColor!].last;
+    final finger = _strokeColor == null || _board.paths[_strokeColor!].isEmpty
+        ? null
+        : _board.paths[_strokeColor!].last;
 
     return PopScope(
       canPop: false,
@@ -126,11 +128,7 @@ class _PlayScreenState extends State<PlayScreen> with SingleTickerProviderStateM
                       height: 48,
                       child: Row(
                         children: [
-                          IconButton(
-                            onPressed: _leave,
-                            icon: const Icon(Icons.arrow_back_rounded),
-                            tooltip: l10n.back,
-                          ),
+                          IconButton(onPressed: _leave, icon: const Icon(Icons.arrow_back_rounded), tooltip: l10n.back),
                           Expanded(child: Text(l10n.levelLabel(_level.id), style: theme.titleLarge)),
                           IconButton(
                             onPressed: _history.isEmpty || _solved ? null : _undo,
@@ -139,7 +137,7 @@ class _PlayScreenState extends State<PlayScreen> with SingleTickerProviderStateM
                           ),
                           IconButton(
                             onPressed: _solved ? null : _hint,
-                            icon: const Icon(Icons.lightbulb_outline_rounded),
+                            icon: Icon(Icons.lightbulb_outline_rounded, color: _solved ? null : AppColors.gold),
                             tooltip: l10n.hint,
                           ),
                           IconButton(
@@ -411,33 +409,47 @@ class _ClearCard extends StatelessWidget {
     final theme = Theme.of(context).textTheme;
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 320),
-      child: Material(
-        color: AppColors.surface,
-        elevation: 8,
-        shadowColor: const Color(0x14000000),
-        borderRadius: BorderRadius.circular(AppDimens.radius),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(24, 28, 24, 20),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: BorderRadius.circular(24),
+          boxShadow: const [BoxShadow(color: Color(0x286B4632), blurRadius: 24, offset: Offset(0, 12))],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(24),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(title, style: theme.titleLarge, textAlign: TextAlign.center),
-              const SizedBox(height: 12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  for (var i = 0; i < 3; i++)
-                    Icon(
-                      i < stars ? Icons.star_rounded : Icons.star_border_rounded,
-                      color: i < stars ? AppColors.yellow : AppColors.faint,
-                      size: 36,
-                    ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              SizedBox(
+              const SizedBox(
+                height: 8,
                 width: double.infinity,
-                child: FilledButton(onPressed: onNext, child: Text(nextLabel)),
+                child: ColoredBox(color: AppColors.waffle),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(24, 22, 24, 20),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(title, style: theme.titleLarge, textAlign: TextAlign.center),
+                    const SizedBox(height: 12),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        for (var i = 0; i < 3; i++)
+                          Icon(
+                            i < stars ? Icons.star_rounded : Icons.star_border_rounded,
+                            color: i < stars ? AppColors.gold : AppColors.faint,
+                            size: 36,
+                          ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      width: double.infinity,
+                      child: FilledButton(onPressed: onNext, child: Text(nextLabel)),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

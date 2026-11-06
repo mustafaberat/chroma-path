@@ -139,10 +139,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             title: Text(l10n.settingsPrivacy),
                             onTap: () => _openPrivacy(context),
                           ),
-                          ListTile(
-                            leading: const Icon(Icons.info_outline_rounded),
-                            title: Text(l10n.developer),
-                          ),
+                          ListTile(leading: const Icon(Icons.info_outline_rounded), title: Text(l10n.developer)),
                           ListTile(
                             leading: const Icon(Icons.tag_rounded),
                             title: Text(l10n.settingsVersion),
@@ -254,11 +251,17 @@ class _Card extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: AppColors.surface,
-      borderRadius: BorderRadius.circular(AppDimens.radius),
-      clipBehavior: Clip.antiAlias,
-      child: Column(children: children),
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(AppDimens.radius),
+        boxShadow: const [BoxShadow(color: Color(0x146B4632), blurRadius: 16, offset: Offset(0, 8))],
+      ),
+      child: Material(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppDimens.radius),
+        clipBehavior: Clip.antiAlias,
+        child: Column(children: children),
+      ),
     );
   }
 }

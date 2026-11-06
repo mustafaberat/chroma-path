@@ -1,33 +1,40 @@
 import 'package:flutter/material.dart';
 
-/// Grayscale interface. Colored pieces use the shared hue ring only.
+/// Blush brunch table. Frosting hues stay in the same seven families.
 abstract final class AppColors {
-  static const Color background = Color(0xFFF3F3F3);
-  static const Color surface = Color(0xFFFFFFFF);
-  static const Color board = Color(0xFFE4E4E4);
-  static const Color ink = Color(0xFF2A2A2A);
-  static const Color muted = Color(0xFF7A7A7A);
-  static const Color faint = Color(0xFFB0B0B0);
-  static const Color line = Color(0xFFD5D5D5);
-  static const Color onAccent = Color(0xFFEBEBEB);
-  static const Color scrim = Color(0xCCF3F3F3);
+  static const Color background = Color(0xFFF6E4DA);
+  static const Color blush = Color(0xFFF3D5C8);
+  static const Color surface = Color(0xFFFFF6EE);
+  static const Color plate = Color(0xFFFFF8F3);
+  static const Color ink = Color(0xFF4A3428);
+  static const Color muted = Color(0xFF8C6B58);
+  static const Color faint = Color(0xFFC4A898);
+  static const Color line = Color(0xFFE8D0C4);
+  static const Color board = Color(0xFFE8C98A);
+  static const Color waffle = Color(0xFFE8C98A);
+  static const Color waffleEdge = Color(0xFFD4A85A);
+  static const Color wafflePocket = Color(0xFFC4924A);
+  static const Color onAccent = Color(0xFFFFF8F2);
+  static const Color scrim = Color(0xD9F6E4DA);
   static const Color transparent = Color(0x00000000);
 
-  static const Color blue = Color(0xFF54A0EB);
-  static const Color green = Color(0xFF54EBAC);
-  static const Color yellow = Color(0xFFEBE654);
-  static const Color danger = Color(0xFFEB545E);
+  static const Color berry = Color(0xFFD4536A);
+  static const Color gold = Color(0xFFE0A84A);
+  static const Color blue = Color(0xFF5AA6DE);
+  static const Color green = Color(0xFF6ED4B8);
+  static const Color yellow = Color(0xFFF0C14A);
+  static const Color danger = Color(0xFFD4536A);
 }
 
 abstract final class Palette {
   static const List<Color> colors = [
-    Color(0xFFEB545E),
-    Color(0xFF54A0EB),
-    Color(0xFF54EBAC),
-    Color(0xFFEBE654),
-    Color(0xFFEB8154),
-    Color(0xFFEB54AC),
-    Color(0xFF9354EB),
+    Color(0xFFE86B86),
+    Color(0xFF5AA6DE),
+    Color(0xFF6ED4B8),
+    Color(0xFFF6E36A),
+    Color(0xFFF09455),
+    Color(0xFFE86AAD),
+    Color(0xFFA678D8),
   ];
 
   static Color of(int index) => colors[index % colors.length];
