@@ -53,6 +53,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get levelClear => '棋盘已填满';
 
   @override
+  String get levelCompliment => '看起来很好吃！';
+
+  @override
   String get allClear => '所有关卡都已完成';
 
   @override

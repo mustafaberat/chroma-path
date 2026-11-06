@@ -13,6 +13,7 @@
   "progressLabel": "Nivel {current} de {total}",
   "nextLevel": "Siguiente nivel",
   "levelClear": "Tablero lleno",
+  "levelCompliment": "¡Se ve delicioso!",
   "allClear": "Todos los niveles están llenos",
   "playAgain": "Jugar de nuevo",
   "undo": "Deshacer",

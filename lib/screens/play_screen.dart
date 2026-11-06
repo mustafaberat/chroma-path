@@ -15,6 +15,7 @@ import '../game/rules.dart';
 import '../l10n/app_localizations.dart';
 import '../services/audio_service.dart';
 import '../services/progress_store.dart';
+import '../widgets/chef_mascot.dart';
 import '../widgets/flow_board.dart';
 
 class PlayScreen extends StatefulWidget {
@@ -196,6 +197,7 @@ class _PlayScreenState extends State<PlayScreen> with SingleTickerProviderStateM
                         opacity: _win,
                         child: _ClearCard(
                           title: l10n.levelClear,
+                          compliment: l10n.levelCompliment,
                           stars: _earned,
                           nextLabel: widget.levelIndex + 1 >= Levels.all.length ? l10n.levels : l10n.nextLevel,
                           onNext: () => unawaited(_next()),
@@ -413,12 +415,14 @@ class _PlayScreenState extends State<PlayScreen> with SingleTickerProviderStateM
 class _ClearCard extends StatelessWidget {
   const _ClearCard({
     required this.title,
+    required this.compliment,
     required this.stars,
     required this.nextLabel,
     required this.onNext,
   });
 
   final String title;
+  final String compliment;
   final int stars;
   final String nextLabel;
   final VoidCallback onNext;
@@ -427,7 +431,7 @@ class _ClearCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context).textTheme;
     return ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: 340),
+      constraints: const BoxConstraints(maxWidth: 360),
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: AppColors.surface,
@@ -450,12 +454,32 @@ class _ClearCard extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(28, 28, 28, 24),
+                padding: const EdgeInsets.fromLTRB(28, 24, 28, 24),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(title, style: theme.titleLarge?.copyWith(fontSize: 26), textAlign: TextAlign.center),
-                    const SizedBox(height: 16),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const ChefMascot(size: 70),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 8),
+                              Text(title, style: theme.titleLarge?.copyWith(fontSize: 24)),
+                              const SizedBox(height: 4),
+                              Text(
+                                compliment,
+                                style: theme.bodyLarge?.copyWith(color: AppColors.muted),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -467,7 +491,7 @@ class _ClearCard extends StatelessWidget {
                           ),
                       ],
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 20),
                     SizedBox(
                       width: double.infinity,
                       child: FilledButton(onPressed: onNext, child: Text(nextLabel)),

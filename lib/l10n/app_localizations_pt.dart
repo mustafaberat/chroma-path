@@ -54,6 +54,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get levelClear => 'Tabuleiro cheio';
 
   @override
+  String get levelCompliment => 'Parece delicioso!';
+
+  @override
   String get allClear => 'Todos os níveis estão cheios';
 
   @override

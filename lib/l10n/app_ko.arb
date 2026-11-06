@@ -13,6 +13,7 @@
   "progressLabel": "레벨 {current} / {total}",
   "nextLevel": "다음 레벨",
   "levelClear": "판을 채웠습니다",
+  "levelCompliment": "맛있어 보여요!",
   "allClear": "모든 레벨을 채웠습니다",
   "playAgain": "다시 플레이",
   "undo": "실행 취소",
