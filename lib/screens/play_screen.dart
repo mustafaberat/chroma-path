@@ -107,9 +107,7 @@ class _PlayScreenState extends State<PlayScreen> with SingleTickerProviderStateM
     final theme = Theme.of(context).textTheme;
     final wide = MediaQuery.sizeOf(context).width >= AppDimens.wide;
     final hintColor = _colorOf(_hintCell);
-    final finger = _strokeColor == null || _board.paths[_strokeColor!].isEmpty
-        ? null
-        : _board.paths[_strokeColor!].last;
+    final finger = _strokeColor == null || _board.paths[_strokeColor!].isEmpty ? null : _board.paths[_strokeColor!].last;
 
     return PopScope(
       canPop: false,
@@ -125,25 +123,41 @@ class _PlayScreenState extends State<PlayScreen> with SingleTickerProviderStateM
                 child: Column(
                   children: [
                     SizedBox(
-                      height: 48,
+                      height: 56,
                       child: Row(
                         children: [
-                          IconButton(onPressed: _leave, icon: const Icon(Icons.arrow_back_rounded), tooltip: l10n.back),
-                          Expanded(child: Text(l10n.levelLabel(_level.id), style: theme.titleLarge)),
+                          IconButton(
+                            onPressed: _leave,
+                            icon: const Icon(Icons.chevron_left_rounded, size: 32),
+                            tooltip: l10n.back,
+                            color: AppColors.ink,
+                          ),
+                          Expanded(
+                            child: Text(
+                              l10n.levelLabel(_level.id),
+                              style: theme.titleLarge?.copyWith(fontSize: 22),
+                            ),
+                          ),
                           IconButton(
                             onPressed: _history.isEmpty || _solved ? null : _undo,
-                            icon: const Icon(Icons.undo_rounded),
+                            icon: const Icon(Icons.undo_rounded, size: 22),
                             tooltip: l10n.undo,
+                            color: AppColors.ink,
                           ),
                           IconButton(
                             onPressed: _solved ? null : _hint,
-                            icon: Icon(Icons.lightbulb_outline_rounded, color: _solved ? null : AppColors.gold),
+                            icon: Icon(
+                              Icons.lightbulb_outline_rounded,
+                              color: _solved ? AppColors.faint : AppColors.gold,
+                              size: 22,
+                            ),
                             tooltip: l10n.hint,
                           ),
                           IconButton(
                             onPressed: _solved || !_dirty ? null : _askReset,
-                            icon: const Icon(Icons.refresh_rounded),
+                            icon: const Icon(Icons.refresh_rounded, size: 22),
                             tooltip: l10n.reset,
+                            color: AppColors.ink,
                           ),
                         ],
                       ),
@@ -397,7 +411,12 @@ class _PlayScreenState extends State<PlayScreen> with SingleTickerProviderStateM
 }
 
 class _ClearCard extends StatelessWidget {
-  const _ClearCard({required this.title, required this.stars, required this.nextLabel, required this.onNext});
+  const _ClearCard({
+    required this.title,
+    required this.stars,
+    required this.nextLabel,
+    required this.onNext,
+  });
 
   final String title;
   final int stars;
@@ -408,7 +427,7 @@ class _ClearCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context).textTheme;
     return ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: 320),
+      constraints: const BoxConstraints(maxWidth: 340),
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: AppColors.surface,
@@ -420,18 +439,23 @@ class _ClearCard extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const SizedBox(
-                height: 8,
+              Container(
+                height: 6,
                 width: double.infinity,
-                child: ColoredBox(color: AppColors.waffle),
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [AppColors.berry, Color(0xFFE89A5A), AppColors.gold],
+                    stops: [0.0, 0.5, 1.0],
+                  ),
+                ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(24, 22, 24, 20),
+                padding: const EdgeInsets.fromLTRB(28, 28, 28, 24),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(title, style: theme.titleLarge, textAlign: TextAlign.center),
-                    const SizedBox(height: 12),
+                    Text(title, style: theme.titleLarge?.copyWith(fontSize: 26), textAlign: TextAlign.center),
+                    const SizedBox(height: 16),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -439,11 +463,11 @@ class _ClearCard extends StatelessWidget {
                           Icon(
                             i < stars ? Icons.star_rounded : Icons.star_border_rounded,
                             color: i < stars ? AppColors.gold : AppColors.faint,
-                            size: 36,
+                            size: 40,
                           ),
                       ],
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 24),
                     SizedBox(
                       width: double.infinity,
                       child: FilledButton(onPressed: onNext, child: Text(nextLabel)),

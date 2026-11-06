@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../analytics/analytics_events.dart';
 import '../analytics/analytics_service.dart';
@@ -38,15 +37,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
         child: Column(
           children: [
             SizedBox(
-              height: 48,
+              height: 56,
               child: Row(
                 children: [
+                  const SizedBox(width: 8),
                   IconButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    icon: const Icon(Icons.arrow_back_rounded),
+                    icon: const Icon(Icons.chevron_left_rounded, size: 32),
                     tooltip: l10n.back,
+                    color: AppColors.ink,
                   ),
-                  Expanded(child: Text(l10n.settings, style: theme.titleLarge)),
+                  const SizedBox(width: 4),
+                  Expanded(
+                    child: Text(l10n.settings, style: theme.titleLarge?.copyWith(fontSize: 24)),
+                  ),
                 ],
               ),
             ),
@@ -61,28 +65,36 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       _Card(
                         children: [
                           ListTile(
-                            leading: const Icon(Icons.translate_rounded),
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
                             title: Text(l10n.settingsLanguage),
-                            subtitle: Text(
-                              lang == null ? l10n.settingsLanguageSystem : SettingsService.languageNames[lang]!,
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  lang == null ? l10n.settingsLanguageSystem : SettingsService.languageNames[lang]!,
+                                  style: theme.bodyMedium,
+                                ),
+                                const SizedBox(width: 4),
+                                const Icon(Icons.chevron_right_rounded, size: 20),
+                              ],
                             ),
                             onTap: () => _pickLanguage(context),
                           ),
-                          SwitchListTile(
-                            secondary: const Icon(Icons.volume_up_rounded),
-                            title: Text(l10n.settingsSound),
+                          const Divider(height: 1),
+                          _ToggleTile(
+                            title: l10n.settingsSound,
                             value: settings.sound,
                             onChanged: settings.setSound,
                           ),
-                          SwitchListTile(
-                            secondary: const Icon(Icons.music_note_rounded),
-                            title: Text(l10n.settingsMusic),
+                          const Divider(height: 1),
+                          _ToggleTile(
+                            title: l10n.settingsMusic,
                             value: settings.music,
                             onChanged: settings.setMusic,
                           ),
-                          SwitchListTile(
-                            secondary: const Icon(Icons.vibration_rounded),
-                            title: Text(l10n.settingsHaptics),
+                          const Divider(height: 1),
+                          _ToggleTile(
+                            title: l10n.settingsHaptics,
                             value: settings.haptics,
                             onChanged: settings.setHaptics,
                           ),
@@ -92,21 +104,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       _Card(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+                            padding: const EdgeInsets.fromLTRB(20, 16, 20, 18),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(l10n.settingsReduceMotion, style: theme.titleMedium),
-                                const SizedBox(height: 10),
+                                const SizedBox(height: 12),
                                 Wrap(
-                                  spacing: 8,
+                                  spacing: 10,
                                   runSpacing: 8,
                                   children: [
                                     for (final choice in ReduceMotionPref.values)
-                                      ChoiceChip(
-                                        label: Text(_motionLabel(l10n, choice)),
+                                      _MotionChip(
+                                        label: _motionLabel(l10n, choice),
                                         selected: settings.reduceMotion == choice,
-                                        onSelected: (_) => settings.setReduceMotion(choice),
+                                        onSelected: () => settings.setReduceMotion(choice),
                                       ),
                                   ],
                                 ),
@@ -119,40 +131,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       _Card(
                         children: [
                           ListTile(
-                            leading: const Icon(Icons.school_outlined),
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
                             title: Text(l10n.howToPlay),
+                            trailing: const Icon(Icons.arrow_forward_rounded, size: 20, color: AppColors.gold),
                             onTap: () => Navigator.of(context).pushNamed(AppRoutes.howTo, arguments: false),
-                          ),
-                          ListTile(
-                            leading: const Icon(Icons.restart_alt_rounded),
-                            title: Text(l10n.resetProgress),
-                            subtitle: Text(l10n.resetProgressBody),
-                            onTap: () => _resetProgress(context),
                           ),
                         ],
                       ),
-                      _Section(l10n.settingsAbout),
-                      _Card(
-                        children: [
-                          ListTile(
-                            leading: const Icon(Icons.privacy_tip_outlined),
-                            title: Text(l10n.settingsPrivacy),
-                            onTap: () => _openPrivacy(context),
-                          ),
-                          ListTile(leading: const Icon(Icons.info_outline_rounded), title: Text(l10n.developer)),
-                          ListTile(
-                            leading: const Icon(Icons.tag_rounded),
-                            title: Text(l10n.settingsVersion),
-                            subtitle: FutureBuilder<PackageInfo>(
-                              future: _info,
-                              builder: (context, snapshot) {
-                                final info = snapshot.data;
-                                if (info == null) return const Text('…');
-                                return Text('${info.version} (${info.buildNumber})');
-                              },
-                            ),
-                          ),
-                        ],
+                      const SizedBox(height: 32),
+                      FutureBuilder<PackageInfo>(
+                        future: _info,
+                        builder: (context, snapshot) {
+                          final info = snapshot.data;
+                          final version = info?.version ?? '…';
+                          return Column(
+                            children: [
+                              Text('ChromaPath  $version', style: theme.bodyMedium, textAlign: TextAlign.center),
+                              const SizedBox(height: 4),
+                              Text(l10n.developer, style: theme.bodyMedium, textAlign: TextAlign.center),
+                            ],
+                          );
+                        },
                       ),
                     ],
                   ),
@@ -166,10 +165,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   String _motionLabel(AppLocalizations l10n, ReduceMotionPref choice) => switch (choice) {
-    ReduceMotionPref.system => l10n.motionSystem,
-    ReduceMotionPref.on => l10n.motionOn,
-    ReduceMotionPref.off => l10n.motionOff,
-  };
+        ReduceMotionPref.system => l10n.motionSystem,
+        ReduceMotionPref.on => l10n.motionOn,
+        ReduceMotionPref.off => l10n.motionOff,
+      };
 
   Future<void> _pickLanguage(BuildContext context) async {
     final settings = AppScope.read(context).settings;
@@ -204,30 +203,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     if (selected == null) return;
     await settings.setLanguage(selected.isEmpty ? null : selected);
   }
-
-  Future<void> _resetProgress(BuildContext context) async {
-    final l10n = AppLocalizations.of(context);
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(l10n.resetProgress),
-        content: Text(l10n.resetProgressBody),
-        actions: [
-          TextButton(onPressed: () => Navigator.of(context).pop(false), child: Text(l10n.cancel)),
-          FilledButton(onPressed: () => Navigator.of(context).pop(true), child: Text(l10n.resetAction)),
-        ],
-      ),
-    );
-    if (confirmed != true || !context.mounted) return;
-    await AppScope.read(context).progress.resetAll();
-  }
-
-  Future<void> _openPrivacy(BuildContext context) async {
-    final l10n = AppLocalizations.of(context);
-    final opened = await launchUrl(Uri.parse(AppIdentity.privacyUrl), mode: LaunchMode.externalApplication);
-    if (opened || !context.mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.openFailed)));
-  }
 }
 
 class _Section extends StatelessWidget {
@@ -238,7 +213,7 @@ class _Section extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(4, 18, 4, 8),
+      padding: const EdgeInsets.fromLTRB(4, 22, 4, 10),
       child: Text(label, style: Theme.of(context).textTheme.bodyMedium),
     );
   }
@@ -256,11 +231,179 @@ class _Card extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppDimens.radius),
         boxShadow: const [BoxShadow(color: Color(0x146B4632), blurRadius: 16, offset: Offset(0, 8))],
       ),
-      child: Material(
-        color: AppColors.surface,
+      child: ClipRRect(
         borderRadius: BorderRadius.circular(AppDimens.radius),
-        clipBehavior: Clip.antiAlias,
-        child: Column(children: children),
+        child: Stack(
+          children: [
+            Positioned.fill(child: CustomPaint(painter: _WaffleTexturePainter())),
+            Material(
+              color: AppColors.surface,
+              borderRadius: BorderRadius.circular(AppDimens.radius),
+              clipBehavior: Clip.antiAlias,
+              child: Column(children: children),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _WaffleTexturePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = AppColors.waffle.withValues(alpha: 0.03)
+      ..style = PaintingStyle.fill;
+
+    const cell = 20.0;
+    const gap = 3.0;
+    final cols = (size.width / cell).ceil();
+    final rows = (size.height / cell).ceil();
+
+    for (var row = 0; row < rows; row++) {
+      for (var col = 0; col < cols; col++) {
+        final rect = RRect.fromRectAndRadius(
+          Rect.fromLTWH(col * cell + gap, row * cell + gap, cell - gap * 2, cell - gap * 2),
+          const Radius.circular(2),
+        );
+        canvas.drawRRect(rect, paint);
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+class _ToggleTile extends StatelessWidget {
+  const _ToggleTile({required this.title, required this.value, required this.onChanged});
+
+  final String title;
+  final bool value;
+  final ValueChanged<bool> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+      title: Text(title),
+      trailing: _FrostingToggle(value: value, onChanged: onChanged),
+      onTap: () => onChanged(!value),
+    );
+  }
+}
+
+class _FrostingToggle extends StatelessWidget {
+  const _FrostingToggle({required this.value, required this.onChanged});
+
+  final bool value;
+  final ValueChanged<bool> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => onChanged(!value),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        width: 56,
+        height: 32,
+        decoration: BoxDecoration(
+          gradient: value
+              ? const RadialGradient(
+                  center: Alignment(-0.3, -0.3),
+                  radius: 1.2,
+                  colors: [Color(0xFFFFD5E0), Color(0xFFE86B86)],
+                )
+              : null,
+          color: value ? null : AppColors.line,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: (value ? AppColors.berry : AppColors.faint).withValues(alpha: 0.25),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: AnimatedAlign(
+          duration: const Duration(milliseconds: 200),
+          alignment: value ? Alignment.centerRight : Alignment.centerLeft,
+          child: Container(
+            width: 26,
+            height: 26,
+            margin: const EdgeInsets.symmetric(horizontal: 3),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: AppColors.surface,
+              boxShadow: const [
+                BoxShadow(color: Color(0x33000000), blurRadius: 3, offset: Offset(0, 1)),
+              ],
+            ),
+            child: value
+                ? CustomPaint(painter: _SprinklePainter(seed: 42))
+                : null,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _SprinklePainter extends CustomPainter {
+  _SprinklePainter({required this.seed});
+
+  final int seed;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final center = Offset(size.width / 2, size.height / 2);
+    final radius = size.width / 2;
+    final colors = [
+      const Color(0xFFFFF3D4),
+      const Color(0xFFFFE4EF),
+      Colors.white,
+    ];
+
+    canvas.drawCircle(center + Offset(-radius * 0.28, -radius * 0.28), radius * 0.22, Paint()..color = Colors.white.withValues(alpha: 0.6));
+    canvas.drawCircle(center + Offset(radius * 0.2, radius * 0.15), radius * 0.15, Paint()..color = colors[0].withValues(alpha: 0.7));
+    canvas.drawCircle(center + Offset(-radius * 0.1, radius * 0.25), radius * 0.12, Paint()..color = colors[1].withValues(alpha: 0.8));
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+class _MotionChip extends StatelessWidget {
+  const _MotionChip({required this.label, required this.selected, required this.onSelected});
+
+  final String label;
+  final bool selected;
+  final VoidCallback onSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onSelected,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+        decoration: BoxDecoration(
+          color: selected ? AppColors.gold : AppColors.blush,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: selected ? AppColors.gold : AppColors.line,
+            width: selected ? 2 : 1,
+          ),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: selected ? FontWeight.w700 : FontWeight.w600,
+            color: selected ? AppColors.ink : AppColors.muted,
+          ),
+        ),
       ),
     );
   }

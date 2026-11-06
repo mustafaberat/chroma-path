@@ -23,15 +23,18 @@ class LevelsScreen extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(
-              height: 48,
+              height: 56,
               child: Row(
                 children: [
+                  const SizedBox(width: 8),
                   IconButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    icon: const Icon(Icons.arrow_back_rounded),
+                    icon: const Icon(Icons.chevron_left_rounded, size: 32),
                     tooltip: l10n.back,
+                    color: AppColors.ink,
                   ),
-                  Expanded(child: Text(l10n.levels, style: theme.titleLarge)),
+                  const SizedBox(width: 4),
+                  Expanded(child: Text(l10n.levels, style: theme.titleLarge?.copyWith(fontSize: 24))),
                 ],
               ),
             ),
@@ -71,10 +74,10 @@ class LevelsScreen extends StatelessWidget {
                         current: current,
                         label: unlocked
                             ? (stars > 0
-                                  ? '$levelName, ${l10n.starsLabel(stars)}'
-                                  : current
-                                  ? '$levelName, ${l10n.currentLevel}'
-                                  : levelName)
+                                ? '$levelName, ${l10n.starsLabel(stars)}'
+                                : current
+                                    ? '$levelName, ${l10n.currentLevel}'
+                                    : levelName)
                             : '$levelName, ${l10n.lockedLevel}',
                         onTap: unlocked
                             ? () {
@@ -134,9 +137,12 @@ class _LevelTile extends StatelessWidget {
             onTap: onTap,
             child: Ink(
               decoration: BoxDecoration(
-                color: unlocked ? AppColors.surface : AppColors.board,
+                color: unlocked ? AppColors.surface : AppColors.blush,
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: current ? AppColors.berry : AppColors.line, width: current ? 2.4 : 1),
+                border: Border.all(
+                  color: current ? AppColors.berry : AppColors.line,
+                  width: current ? 2.4 : 1,
+                ),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -154,7 +160,7 @@ class _LevelTile extends StatelessWidget {
                           Icon(
                             i < stars ? Icons.star_rounded : Icons.star_border_rounded,
                             size: 12,
-                            color: i < stars ? AppColors.yellow : AppColors.faint,
+                            color: i < stars ? AppColors.gold : AppColors.faint,
                           ),
                       ],
                     )

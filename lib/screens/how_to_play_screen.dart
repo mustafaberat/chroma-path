@@ -30,12 +30,14 @@ class _HowToPlayScreenState extends State<HowToPlayScreen> with SingleTickerProv
     ],
   );
 
-  late final AnimationController _loop = AnimationController(vsync: this, duration: const Duration(milliseconds: 6400));
+  late final AnimationController _loop =
+      AnimationController(vsync: this, duration: const Duration(milliseconds: 6400));
 
   @override
   void initState() {
     super.initState();
-    AnalyticsService.instance.logHowToPlayOpen(widget.firstRun ? AnalyticsValues.firstRun : AnalyticsValues.settings);
+    AnalyticsService.instance
+        .logHowToPlayOpen(widget.firstRun ? AnalyticsValues.firstRun : AnalyticsValues.settings);
     AnalyticsService.instance.logScreen(AnalyticsValues.howTo);
   }
 

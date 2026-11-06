@@ -94,7 +94,10 @@ class _FlowBoardViewState extends State<FlowBoardView> with SingleTickerProvider
                         onPointerMove: widget.interactive
                             ? (event) {
                                 final position = event.localPosition;
-                                if (position.dx < 0 || position.dy < 0 || position.dx >= side || position.dy >= side) {
+                                if (position.dx < 0 ||
+                                    position.dy < 0 ||
+                                    position.dx >= side ||
+                                    position.dy >= side) {
                                   return;
                                 }
                                 widget.onMove(cellAt(position));
@@ -166,7 +169,7 @@ class _BoardPainter extends CustomPainter {
       if (color == null) continue;
       final center = _center(index, count, cell);
       final scale = fingerCell == index ? 1.08 : 1.0;
-      _dollop(canvas, center, Palette.of(color), cell * 0.31 * scale, index * 17 + color * 97);
+      _dollop(canvas, center, Palette.of(color), cell * 0.35 * scale, index * 17 + color * 97);
     }
 
     if (hintCell != null && hintColor != null) {
@@ -203,20 +206,22 @@ class _BoardPainter extends CustomPainter {
           stops: [0.0, 0.48, 1.0],
         ).createShader(Offset.zero & size),
     );
-    canvas.drawRRect(
-      body.deflate(cell * 0.02),
-      Paint()
-        ..color = AppColors.waffleEdge
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = cell * 0.035,
-    );
 
-    final ridge = cell * 0.155;
-    final pocketRadius = Radius.circular(cell * 0.11);
+    final ridge = cell * 0.12;
+    final pocketRadius = Radius.circular(cell * 0.14);
     for (var index = 0; index < count * count; index++) {
       final rect = _rect(index, count, cell, ridge);
       final pocket = RRect.fromRectAndRadius(rect, pocketRadius);
-      canvas.drawRRect(pocket, Paint()..color = AppColors.wafflePocket);
+
+      canvas.drawRRect(
+        pocket.shift(Offset(cell * 0.01, cell * 0.015)),
+        Paint()
+          ..color = const Color(0x4D3A2418)
+          ..maskFilter = MaskFilter.blur(BlurStyle.normal, cell * 0.03),
+      );
+
+      canvas.drawRRect(pocket, Paint()..color = const Color(0xFFA67A3C));
+
       canvas.save();
       canvas.clipRRect(pocket);
       canvas.drawRect(
@@ -225,12 +230,20 @@ class _BoardPainter extends CustomPainter {
           ..shader = const LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [Color(0x59000000), Color(0x00000000), Color(0x33FFFFFF)],
-            stops: [0.0, 0.52, 1.0],
+            colors: [Color(0x66000000), Color(0x00000000), Color(0x1AFFFFFF)],
+            stops: [0.0, 0.55, 1.0],
           ).createShader(rect),
       );
       canvas.restore();
     }
+
+    canvas.drawRRect(
+      body.deflate(cell * 0.015),
+      Paint()
+        ..color = const Color(0xFFD4A85A)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = cell * 0.04,
+    );
   }
 
   void _frosting(Canvas canvas, List<int> path, int color, int count, double cell) {
@@ -241,17 +254,19 @@ class _BoardPainter extends CustomPainter {
     for (final point in points.skip(1)) {
       tube.lineTo(point.dx, point.dy);
     }
-    final width = cell * 0.48;
+    final width = cell * 0.52;
+
     canvas.drawPath(
-      tube.shift(Offset(cell * 0.018, cell * 0.04)),
+      tube.shift(Offset(cell * 0.02, cell * 0.045)),
       Paint()
         ..color = const Color(0x553A2418)
         ..style = PaintingStyle.stroke
         ..strokeWidth = width
         ..strokeCap = StrokeCap.round
         ..strokeJoin = StrokeJoin.round
-        ..maskFilter = MaskFilter.blur(BlurStyle.normal, cell * 0.04),
+        ..maskFilter = MaskFilter.blur(BlurStyle.normal, cell * 0.05),
     );
+
     canvas.drawPath(
       tube,
       Paint()
@@ -261,15 +276,17 @@ class _BoardPainter extends CustomPainter {
         ..strokeCap = StrokeCap.round
         ..strokeJoin = StrokeJoin.round,
     );
+
     canvas.drawPath(
-      tube.shift(Offset(-cell * 0.03, -cell * 0.04)),
+      tube.shift(Offset(-cell * 0.035, -cell * 0.045)),
       Paint()
-        ..color = Colors.white.withValues(alpha: 0.48)
+        ..color = Colors.white.withValues(alpha: 0.5)
         ..style = PaintingStyle.stroke
-        ..strokeWidth = width * 0.18
+        ..strokeWidth = width * 0.2
         ..strokeCap = StrokeCap.round
         ..strokeJoin = StrokeJoin.round,
     );
+
     for (var i = 0; i < path.length - 1; i++) {
       _sugarOnSegment(canvas, points[i], points[i + 1], path[i] * 131 + path[i + 1] * 17 + color * 997, cell);
     }
@@ -280,14 +297,14 @@ class _BoardPainter extends CustomPainter {
       center + Offset(radius * 0.08, radius * 0.16),
       radius,
       Paint()
-        ..color = const Color(0x443A2418)
-        ..maskFilter = MaskFilter.blur(BlurStyle.normal, radius * 0.22),
+        ..color = const Color(0x553A2418)
+        ..maskFilter = MaskFilter.blur(BlurStyle.normal, radius * 0.24),
     );
     canvas.drawCircle(center, radius, Paint()..color = color);
     canvas.drawCircle(
       center + Offset(-radius * 0.28, -radius * 0.32),
-      radius * 0.34,
-      Paint()..color = Colors.white.withValues(alpha: 0.58),
+      radius * 0.36,
+      Paint()..color = Colors.white.withValues(alpha: 0.6),
     );
     _sugarOnDisc(canvas, center, radius, seed);
   }
@@ -298,36 +315,36 @@ class _BoardPainter extends CustomPainter {
     final len = delta.distance;
     if (len < 1) return;
     final normal = Offset(-delta.dy / len, delta.dx / len);
-    final count = 4 + (seed.abs() % 3);
+    final count = 5 + (seed.abs() % 4);
     for (var i = 0; i < count; i++) {
-      final t = 0.14 + random.nextDouble() * 0.72;
-      final lateral = (random.nextDouble() - 0.5) * cell * 0.28;
-      _spark(canvas, a + delta * t + normal * lateral, cell * (0.012 + random.nextDouble() * 0.016), random);
+      final t = 0.12 + random.nextDouble() * 0.76;
+      final lateral = (random.nextDouble() - 0.5) * cell * 0.32;
+      _spark(canvas, a + delta * t + normal * lateral, cell * (0.014 + random.nextDouble() * 0.018), random);
     }
   }
 
   void _sugarOnDisc(Canvas canvas, Offset center, double radius, int seed) {
     final random = math.Random(seed & 0x7fffffff);
-    for (var i = 0; i < 7; i++) {
+    for (var i = 0; i < 9; i++) {
       final angle = random.nextDouble() * math.pi * 2;
-      final dist = random.nextDouble() * radius * 0.68;
+      final dist = random.nextDouble() * radius * 0.7;
       _spark(
         canvas,
         center + Offset(math.cos(angle), math.sin(angle)) * dist,
-        radius * (0.06 + random.nextDouble() * 0.05),
+        radius * (0.065 + random.nextDouble() * 0.055),
         random,
       );
     }
   }
 
   void _spark(Canvas canvas, Offset at, double radius, math.Random random) {
-    final color = _sugar[random.nextInt(_sugar.length)].withValues(alpha: 0.72 + random.nextDouble() * 0.28);
+    final color = _sugar[random.nextInt(_sugar.length)].withValues(alpha: 0.75 + random.nextDouble() * 0.25);
     canvas.drawCircle(at, radius, Paint()..color = color);
-    if (radius > 1.4) {
+    if (radius > 1.5) {
       canvas.drawCircle(
-        at + Offset(-radius * 0.25, -radius * 0.25),
-        radius * 0.35,
-        Paint()..color = const Color(0xE6FFFFFF),
+        at + Offset(-radius * 0.28, -radius * 0.28),
+        radius * 0.38,
+        Paint()..color = const Color(0xEAFFFFFF),
       );
     }
   }

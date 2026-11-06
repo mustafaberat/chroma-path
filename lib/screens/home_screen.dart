@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 
 import '../analytics/analytics_events.dart';
@@ -8,7 +10,6 @@ import '../config/tokens.dart';
 import '../game/levels.dart';
 import '../l10n/app_localizations.dart';
 import '../widgets/banner_slot.dart';
-import '../widgets/flow_board.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -35,100 +36,6 @@ class _HomeScreenState extends State<HomeScreen> {
     final services = AppScope.of(context);
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context).textTheme;
-    final wide = MediaQuery.sizeOf(context).width >= AppDimens.wide;
-    final board = ListenableBuilder(
-      listenable: services.progress,
-      builder: (context, _) {
-        final progress = services.progress;
-        final previewIndex = progress.finishedAll ? Levels.all.length - 1 : progress.frontier;
-        return IgnorePointer(
-          child: FlowBoardView(
-            board: Levels.all[previewIndex].empty,
-            label: l10n.boardLabel,
-            onDown: (_) {},
-            onMove: (_) {},
-            onUp: () {},
-            interactive: false,
-          ),
-        );
-      },
-    );
-
-    final copy = ListenableBuilder(
-      listenable: services.progress,
-      builder: (context, _) {
-        final progress = services.progress;
-        final fraction = progress.frontier / progress.stars.length;
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              children: [
-                for (final color in Palette.colors)
-                  Container(
-                    width: 16,
-                    height: 16,
-                    margin: const EdgeInsets.only(right: 7),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: RadialGradient(
-                        center: const Alignment(-0.35, -0.4),
-                        radius: 0.9,
-                        colors: [const Color(0xFFFFFBF6), color],
-                        stops: const [0.05, 0.72],
-                      ),
-                      boxShadow: [
-                        BoxShadow(color: color.withValues(alpha: 0.28), blurRadius: 4, offset: const Offset(0, 2)),
-                      ],
-                    ),
-                  ),
-              ],
-            ),
-            const SizedBox(height: 14),
-            Text(l10n.appTitle, style: theme.headlineLarge),
-            const SizedBox(height: 8),
-            Text(l10n.homeTagline, style: theme.bodyMedium),
-            const SizedBox(height: AppDimens.gapL),
-            Text(
-              progress.finishedAll ? l10n.allClear : l10n.progressLabel(progress.currentNumber, Levels.all.length),
-              style: theme.titleMedium,
-            ),
-            const SizedBox(height: 8),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(99),
-              child: LinearProgressIndicator(
-                value: fraction,
-                minHeight: 10,
-                backgroundColor: AppColors.blush,
-                color: AppColors.berry,
-              ),
-            ),
-            const SizedBox(height: AppDimens.gapL),
-            FilledButton(
-              onPressed: () => _play(context),
-              child: Text(progress.finishedAll ? l10n.playAgain : l10n.play),
-            ),
-            const SizedBox(height: 8),
-            OutlinedButton(
-              onPressed: () {
-                services.audio.unlock();
-                AnalyticsService.instance.logScreen(AnalyticsValues.levels);
-                Navigator.of(context).pushNamed(AppRoutes.levels);
-              },
-              child: Text(l10n.levels),
-            ),
-            TextButton(
-              onPressed: () {
-                AnalyticsService.instance.logSettingsOpen(AnalyticsValues.home);
-                Navigator.of(context).pushNamed(AppRoutes.settings);
-              },
-              child: Text(l10n.settings),
-            ),
-          ],
-        );
-      },
-    );
 
     return Scaffold(
       body: SafeArea(
@@ -136,61 +43,125 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.all(AppDimens.page),
           child: Column(
             children: [
-              Align(
-                alignment: Alignment.centerRight,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      tooltip: services.settings.sound ? l10n.soundOn : l10n.soundOff,
-                      onPressed: () => services.settings.setSound(!services.settings.sound),
-                      icon: Icon(services.settings.sound ? Icons.volume_up_rounded : Icons.volume_off_rounded),
-                    ),
-                    IconButton(
-                      tooltip: services.settings.music ? l10n.musicOn : l10n.musicOff,
-                      onPressed: () => services.settings.setMusic(!services.settings.music),
-                      icon: Icon(services.settings.music ? Icons.music_note_rounded : Icons.music_off_rounded),
-                    ),
-                  ],
-                ),
-              ),
               Expanded(
                 child: Center(
                   child: ConstrainedBox(
-                    constraints: BoxConstraints(maxWidth: wide ? 920 : AppDimens.maxContent),
-                    child: wide
-                        ? Row(
+                    constraints: const BoxConstraints(maxWidth: AppDimens.maxContent),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          const SizedBox(height: 12),
+                          const Center(child: _WaffleMotif()),
+                          const SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Expanded(child: board),
-                              const SizedBox(width: 36),
-                              Expanded(child: copy),
-                            ],
-                          )
-                        : LayoutBuilder(
-                            builder: (context, constraints) {
-                              var side = constraints.maxHeight * 0.42;
-                              if (side < 140) side = 140;
-                              if (side > constraints.maxWidth) side = constraints.maxWidth;
-                              return SingleChildScrollView(
-                                child: ConstrainedBox(
-                                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      SizedBox(
-                                        width: double.infinity,
-                                        height: side,
-                                        child: Center(
-                                          child: SizedBox(width: side, height: side, child: board),
-                                        ),
+                              for (final color in Palette.colors)
+                                Container(
+                                  width: 28,
+                                  height: 28,
+                                  margin: const EdgeInsets.only(right: 8),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    gradient: RadialGradient(
+                                      center: const Alignment(-0.35, -0.4),
+                                      radius: 0.9,
+                                      colors: [const Color(0xFFFFFBF6), color],
+                                      stops: const [0.05, 0.72],
+                                    ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: color.withValues(alpha: 0.3),
+                                        blurRadius: 6,
+                                        offset: const Offset(0, 3),
                                       ),
-                                      copy,
                                     ],
                                   ),
+                                  child: CustomPaint(painter: _SugarPainter(color: color)),
                                 ),
+                            ],
+                          ),
+                          const SizedBox(height: 24),
+                          Text('ChromaPath', style: theme.headlineLarge, textAlign: TextAlign.center),
+                          const SizedBox(height: 4),
+                          Text('Connect Puzzle', style: theme.titleLarge, textAlign: TextAlign.center),
+                          const SizedBox(height: 28),
+                          ListenableBuilder(
+                            listenable: services.progress,
+                            builder: (context, _) {
+                              final progress = services.progress;
+                              final fraction = progress.frontier / progress.stars.length;
+                              return Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Text(
+                                    progress.finishedAll
+                                        ? l10n.allClear
+                                        : l10n.progressLabel(progress.currentNumber, Levels.all.length),
+                                    style: theme.titleMedium,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  const SizedBox(height: 12),
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(99),
+                                    child: Container(
+                                      height: 18,
+                                      decoration: BoxDecoration(
+                                        color: AppColors.blush,
+                                        borderRadius: BorderRadius.circular(99),
+                                      ),
+                                      child: FractionallySizedBox(
+                                        alignment: Alignment.centerLeft,
+                                        widthFactor: fraction.clamp(0.0, 1.0),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            gradient: const LinearGradient(
+                                              colors: [AppColors.berry, Color(0xFFE89A5A), AppColors.gold],
+                                              stops: [0.0, 0.5, 1.0],
+                                            ),
+                                            borderRadius: BorderRadius.circular(99),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 28),
+                                  FilledButton(
+                                    onPressed: () => _play(context),
+                                    child: Text(progress.finishedAll ? l10n.playAgain : l10n.play),
+                                  ),
+                                  const SizedBox(height: 12),
+                                  OutlinedButton(
+                                    style: OutlinedButton.styleFrom(
+                                      backgroundColor: AppColors.surface,
+                                      side: const BorderSide(color: AppColors.gold, width: 2),
+                                    ),
+                                    onPressed: () {
+                                      services.audio.unlock();
+                                      AnalyticsService.instance.logScreen(AnalyticsValues.levels);
+                                      Navigator.of(context).pushNamed(AppRoutes.levels);
+                                    },
+                                    child: Text(l10n.levels),
+                                  ),
+                                  const SizedBox(height: 12),
+                                  TextButton(
+                                    onPressed: () {
+                                      AnalyticsService.instance.logSettingsOpen(AnalyticsValues.home);
+                                      Navigator.of(context).pushNamed(AppRoutes.settings);
+                                    },
+                                    child: Text(l10n.settings),
+                                  ),
+                                ],
                               );
                             },
                           ),
+                          const SizedBox(height: 12),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -210,4 +181,94 @@ class _HomeScreenState extends State<HomeScreen> {
     AnalyticsService.instance.logPlayTap(index + 1);
     Navigator.of(context).pushNamed(AppRoutes.play, arguments: index);
   }
+}
+
+class _WaffleMotif extends StatelessWidget {
+  const _WaffleMotif();
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 72,
+      height: 72,
+      child: CustomPaint(painter: _WaffleMotifPainter()),
+    );
+  }
+}
+
+class _WaffleMotifPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final rect = Offset.zero & size;
+    final body = RRect.fromRectAndRadius(rect, Radius.circular(size.width * 0.18));
+    canvas.drawRRect(
+      body,
+      Paint()
+        ..shader = const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xFFF6D7A2), AppColors.waffle, Color(0xFFD7B06A)],
+          stops: [0.0, 0.48, 1.0],
+        ).createShader(rect),
+    );
+    canvas.drawRRect(
+      body.deflate(size.width * 0.02),
+      Paint()
+        ..color = AppColors.waffleEdge
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = size.width * 0.035,
+    );
+
+    final cell = size.width / 5;
+    final ridge = cell * 0.15;
+    final pocketRadius = Radius.circular(cell * 0.11);
+    for (var row = 0; row < 5; row++) {
+      for (var col = 0; col < 5; col++) {
+        final pocket = RRect.fromRectAndRadius(
+          Rect.fromLTWH(col * cell + ridge, row * cell + ridge, cell - ridge * 2, cell - ridge * 2),
+          pocketRadius,
+        );
+        canvas.drawRRect(pocket, Paint()..color = AppColors.wafflePocket);
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+class _SugarPainter extends CustomPainter {
+  _SugarPainter({required this.color});
+
+  final Color color;
+
+  static const List<Color> _sugar = [
+    Color(0xFFFFFBF5),
+    Color(0xFFFFF3D4),
+    Color(0xFFE7FBFF),
+    Color(0xFFFFE4EF),
+    Color(0xFFFFFFFF),
+  ];
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final center = Offset(size.width / 2, size.height / 2);
+    final radius = size.width / 2;
+    final random = math.Random(color.hashCode & 0x7fffffff);
+    for (var i = 0; i < 8; i++) {
+      final angle = random.nextDouble() * math.pi * 2;
+      final dist = random.nextDouble() * radius * 0.65;
+      final sparkRadius = radius * (0.07 + random.nextDouble() * 0.05);
+      final sparkColor =
+          _sugar[random.nextInt(_sugar.length)].withValues(alpha: 0.75 + random.nextDouble() * 0.25);
+      canvas.drawCircle(
+        center + Offset(math.cos(angle), math.sin(angle)) * dist,
+        sparkRadius,
+        Paint()..color = sparkColor,
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _SugarPainter oldDelegate) => oldDelegate.color != color;
 }
