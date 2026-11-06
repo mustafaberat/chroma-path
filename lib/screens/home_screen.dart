@@ -200,37 +200,96 @@ class _WaffleMotifPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final rect = Offset.zero & size;
-    final body = RRect.fromRectAndRadius(rect, Radius.circular(size.width * 0.18));
+    final body = RRect.fromRectAndRadius(rect, Radius.circular(size.width * 0.22));
+    
     canvas.drawRRect(
       body,
       Paint()
-        ..shader = const LinearGradient(
+        ..shader = LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Color(0xFFF6D7A2), AppColors.waffle, Color(0xFFD7B06A)],
-          stops: [0.0, 0.48, 1.0],
+          colors: [
+            const Color(0xFFF2D098),
+            const Color(0xFFE8C98A),
+            const Color(0xFFD4A85A),
+          ],
+          stops: const [0.0, 0.5, 1.0],
         ).createShader(rect),
-    );
-    canvas.drawRRect(
-      body.deflate(size.width * 0.02),
-      Paint()
-        ..color = AppColors.waffleEdge
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = size.width * 0.035,
     );
 
     final cell = size.width / 5;
-    final ridge = cell * 0.15;
-    final pocketRadius = Radius.circular(cell * 0.11);
+    final ridge = cell * 0.13;
+    final pocketRadius = Radius.circular(cell * 0.16);
+    
     for (var row = 0; row < 5; row++) {
       for (var col = 0; col < 5; col++) {
-        final pocket = RRect.fromRectAndRadius(
-          Rect.fromLTWH(col * cell + ridge, row * cell + ridge, cell - ridge * 2, cell - ridge * 2),
-          pocketRadius,
+        final pocketRect = Rect.fromLTWH(col * cell + ridge, row * cell + ridge, cell - ridge * 2, cell - ridge * 2);
+        final pocket = RRect.fromRectAndRadius(pocketRect, pocketRadius);
+
+        canvas.drawRRect(
+          pocket.shift(Offset(cell * 0.015, cell * 0.02)),
+          Paint()
+            ..color = const Color(0x4D3A2418)
+            ..maskFilter = MaskFilter.blur(BlurStyle.normal, cell * 0.03),
         );
-        canvas.drawRRect(pocket, Paint()..color = AppColors.wafflePocket);
+
+        canvas.drawRRect(
+          pocket,
+          Paint()
+            ..shader = RadialGradient(
+              center: const Alignment(0.0, 0.0),
+              radius: 0.8,
+              colors: [
+                const Color(0xFF8B6534),
+                const Color(0xFF9B7340),
+                const Color(0xFFA67A3C),
+              ],
+              stops: const [0.0, 0.5, 1.0],
+            ).createShader(pocketRect),
+        );
+
+        canvas.save();
+        canvas.clipRRect(pocket);
+        canvas.drawRect(
+          pocketRect,
+          Paint()
+            ..shader = const LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color(0x99000000),
+                Color(0x00000000),
+                Color(0x33FFFFFF),
+              ],
+              stops: [0.0, 0.6, 1.0],
+            ).createShader(pocketRect),
+        );
+        canvas.restore();
       }
     }
+
+    canvas.drawRRect(
+      body.deflate(size.width * 0.02),
+      Paint()
+        ..shader = const LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Color(0xFFF5D8A8),
+            Color(0xFFE8C98A),
+          ],
+        ).createShader(rect)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = size.width * 0.055,
+    );
+
+    canvas.drawRRect(
+      body.deflate(size.width * 0.025),
+      Paint()
+        ..color = Colors.white.withValues(alpha: 0.3)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = size.width * 0.02,
+    );
   }
 
   @override
