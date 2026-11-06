@@ -268,6 +268,113 @@ class _WaffleMotifPainter extends CustomPainter {
       }
     }
 
+    final pathWidth = size.width * 0.08;
+    
+    final berryPath = Path()
+      ..moveTo(size.width * 0.25, size.height * 0.25)
+      ..lineTo(size.width * 0.5, size.height * 0.25)
+      ..lineTo(size.width * 0.5, size.height * 0.5)
+      ..lineTo(size.width * 0.75, size.height * 0.5);
+
+    canvas.drawPath(
+      berryPath.shift(Offset(pathWidth * 0.15, pathWidth * 0.15)),
+      Paint()
+        ..color = const Color(0x553A2418)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = pathWidth
+        ..strokeCap = StrokeCap.round
+        ..strokeJoin = StrokeJoin.round
+        ..maskFilter = MaskFilter.blur(BlurStyle.normal, pathWidth * 0.2),
+    );
+
+    canvas.drawPath(
+      berryPath,
+      Paint()
+        ..shader = RadialGradient(
+          center: const Alignment(-0.3, -0.3),
+          radius: 1.0,
+          colors: [
+            const Color(0xFFFF8FA3),
+            const Color(0xFFE86B86),
+          ],
+        ).createShader(rect)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = pathWidth
+        ..strokeCap = StrokeCap.round
+        ..strokeJoin = StrokeJoin.round,
+    );
+
+    final mintPath = Path()
+      ..moveTo(size.width * 0.25, size.height * 0.75)
+      ..lineTo(size.width * 0.5, size.height * 0.75)
+      ..lineTo(size.width * 0.5, size.height * 0.5);
+
+    canvas.drawPath(
+      mintPath.shift(Offset(pathWidth * 0.15, pathWidth * 0.15)),
+      Paint()
+        ..color = const Color(0x553A2418)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = pathWidth
+        ..strokeCap = StrokeCap.round
+        ..strokeJoin = StrokeJoin.round
+        ..maskFilter = MaskFilter.blur(BlurStyle.normal, pathWidth * 0.2),
+    );
+
+    canvas.drawPath(
+      mintPath,
+      Paint()
+        ..shader = RadialGradient(
+          center: const Alignment(-0.3, -0.3),
+          radius: 1.0,
+          colors: [
+            const Color(0xFF8EE8D4),
+            const Color(0xFF6ED4B8),
+          ],
+        ).createShader(rect)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = pathWidth
+        ..strokeCap = StrokeCap.round
+        ..strokeJoin = StrokeJoin.round,
+    );
+
+    final dollopRadius = size.width * 0.075;
+    final dollops = [
+      (Offset(size.width * 0.25, size.height * 0.25), Palette.colors[0]),
+      (Offset(size.width * 0.75, size.height * 0.5), Palette.colors[0]),
+      (Offset(size.width * 0.25, size.height * 0.75), Palette.colors[2]),
+      (Offset(size.width * 0.5, size.height * 0.5), Palette.colors[2]),
+    ];
+
+    for (final (center, color) in dollops) {
+      canvas.drawCircle(
+        center + Offset(dollopRadius * 0.1, dollopRadius * 0.15),
+        dollopRadius,
+        Paint()
+          ..color = const Color(0x553A2418)
+          ..maskFilter = MaskFilter.blur(BlurStyle.normal, dollopRadius * 0.2),
+      );
+
+      canvas.drawCircle(
+        center,
+        dollopRadius,
+        Paint()
+          ..shader = RadialGradient(
+            center: const Alignment(-0.35, -0.4),
+            radius: 1.0,
+            colors: [
+              Color.lerp(color, Colors.white, 0.2)!,
+              color,
+            ],
+          ).createShader(Rect.fromCircle(center: center, radius: dollopRadius)),
+      );
+
+      canvas.drawCircle(
+        center + Offset(-dollopRadius * 0.3, -dollopRadius * 0.35),
+        dollopRadius * 0.35,
+        Paint()..color = Colors.white.withValues(alpha: 0.65),
+      );
+    }
+
     canvas.drawRRect(
       body.deflate(size.width * 0.02),
       Paint()
