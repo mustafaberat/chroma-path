@@ -63,64 +63,70 @@ class _FlowBoardViewState extends State<FlowBoardView> with SingleTickerProvider
       aspectRatio: 1,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: AppColors.plate,
-          borderRadius: BorderRadius.circular(32),
-          boxShadow: const [BoxShadow(color: Color(0x286B4632), blurRadius: 28, offset: Offset(8, 16))],
+          color: Colors.white,
+          shape: BoxShape.circle,
+          boxShadow: const [
+            BoxShadow(color: Color(0x286B4632), blurRadius: 32, offset: Offset(0, 12)),
+            BoxShadow(color: Color(0x146B4632), blurRadius: 8, offset: Offset(0, 4)),
+          ],
         ),
         child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(22),
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                final side = constraints.maxWidth;
-                int cellAt(Offset position) {
-                  final cell = side / widget.board.size;
-                  final col = (position.dx / cell).floor().clamp(0, widget.board.size - 1);
-                  final row = (position.dy / cell).floor().clamp(0, widget.board.size - 1);
-                  return row * widget.board.size + col;
-                }
+          padding: const EdgeInsets.all(16),
+          child: AspectRatio(
+            aspectRatio: 1,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(28),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final side = constraints.maxWidth;
+                  int cellAt(Offset position) {
+                    final cell = side / widget.board.size;
+                    final col = (position.dx / cell).floor().clamp(0, widget.board.size - 1);
+                    final row = (position.dy / cell).floor().clamp(0, widget.board.size - 1);
+                    return row * widget.board.size + col;
+                  }
 
-                return Semantics(
-                  label: widget.label,
-                  child: AnimatedBuilder(
-                    animation: _pulse,
-                    builder: (context, _) {
-                      return Listener(
-                        behavior: HitTestBehavior.opaque,
-                        onPointerDown: widget.interactive
-                            ? (event) => widget.onDown(cellAt(event.localPosition))
-                            : null,
-                        onPointerMove: widget.interactive
-                            ? (event) {
-                                final position = event.localPosition;
-                                if (position.dx < 0 ||
-                                    position.dy < 0 ||
-                                    position.dx >= side ||
-                                    position.dy >= side) {
-                                  return;
+                  return Semantics(
+                    label: widget.label,
+                    child: AnimatedBuilder(
+                      animation: _pulse,
+                      builder: (context, _) {
+                        return Listener(
+                          behavior: HitTestBehavior.opaque,
+                          onPointerDown: widget.interactive
+                              ? (event) => widget.onDown(cellAt(event.localPosition))
+                              : null,
+                          onPointerMove: widget.interactive
+                              ? (event) {
+                                  final position = event.localPosition;
+                                  if (position.dx < 0 ||
+                                      position.dy < 0 ||
+                                      position.dx >= side ||
+                                      position.dy >= side) {
+                                    return;
+                                  }
+                                  widget.onMove(cellAt(position));
                                 }
-                                widget.onMove(cellAt(position));
-                              }
-                            : null,
-                        onPointerUp: widget.interactive ? (_) => widget.onUp() : null,
-                        onPointerCancel: widget.interactive ? (_) => widget.onUp() : null,
-                        child: CustomPaint(
-                          painter: _BoardPainter(
-                            board: widget.board,
-                            hintCell: widget.hintCell,
-                            hintColor: widget.hintColor,
-                            flashCell: widget.flashCell,
-                            fingerCell: widget.fingerCell,
-                            pulse: _pulse.value,
+                              : null,
+                          onPointerUp: widget.interactive ? (_) => widget.onUp() : null,
+                          onPointerCancel: widget.interactive ? (_) => widget.onUp() : null,
+                          child: CustomPaint(
+                            painter: _BoardPainter(
+                              board: widget.board,
+                              hintCell: widget.hintCell,
+                              hintColor: widget.hintColor,
+                              flashCell: widget.flashCell,
+                              fingerCell: widget.fingerCell,
+                              pulse: _pulse.value,
+                            ),
+                            child: const SizedBox.expand(),
                           ),
-                          child: const SizedBox.expand(),
-                        ),
-                      );
-                    },
-                  ),
-                );
-              },
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
             ),
           ),
         ),
@@ -169,7 +175,7 @@ class _BoardPainter extends CustomPainter {
       if (color == null) continue;
       final center = _center(index, count, cell);
       final scale = fingerCell == index ? 1.08 : 1.0;
-      _dollop(canvas, center, Palette.of(color), cell * 0.35 * scale, index * 17 + color * 97);
+      _dollop(canvas, center, Palette.of(color), cell * 0.38 * scale, index * 17 + color * 97);
     }
 
     if (hintCell != null && hintColor != null) {
@@ -195,32 +201,51 @@ class _BoardPainter extends CustomPainter {
   }
 
   void _waffle(Canvas canvas, Size size, int count, double cell) {
-    final body = RRect.fromRectAndRadius(Offset.zero & size, Radius.circular(cell * 0.18));
+    final body = RRect.fromRectAndRadius(Offset.zero & size, Radius.circular(cell * 0.22));
+    
     canvas.drawRRect(
       body,
       Paint()
-        ..shader = const LinearGradient(
+        ..shader = LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Color(0xFFF6D7A2), AppColors.waffle, Color(0xFFD7B06A)],
-          stops: [0.0, 0.48, 1.0],
+          colors: [
+            const Color(0xFFF2D098),
+            const Color(0xFFE8C98A),
+            const Color(0xFFD4A85A),
+          ],
+          stops: const [0.0, 0.5, 1.0],
         ).createShader(Offset.zero & size),
     );
 
-    final ridge = cell * 0.12;
-    final pocketRadius = Radius.circular(cell * 0.14);
+    final ridge = cell * 0.13;
+    final pocketRadius = Radius.circular(cell * 0.16);
+    
     for (var index = 0; index < count * count; index++) {
       final rect = _rect(index, count, cell, ridge);
       final pocket = RRect.fromRectAndRadius(rect, pocketRadius);
 
       canvas.drawRRect(
-        pocket.shift(Offset(cell * 0.01, cell * 0.015)),
+        pocket.shift(Offset(cell * 0.015, cell * 0.02)),
         Paint()
-          ..color = const Color(0x4D3A2418)
-          ..maskFilter = MaskFilter.blur(BlurStyle.normal, cell * 0.03),
+          ..color = const Color(0x663A2418)
+          ..maskFilter = MaskFilter.blur(BlurStyle.normal, cell * 0.045),
       );
 
-      canvas.drawRRect(pocket, Paint()..color = const Color(0xFFA67A3C));
+      canvas.drawRRect(
+        pocket,
+        Paint()
+          ..shader = RadialGradient(
+            center: const Alignment(0.0, 0.0),
+            radius: 0.8,
+            colors: [
+              const Color(0xFF8B6534),
+              const Color(0xFF9B7340),
+              const Color(0xFFA67A3C),
+            ],
+            stops: const [0.0, 0.5, 1.0],
+          ).createShader(rect),
+      );
 
       canvas.save();
       canvas.clipRRect(pocket);
@@ -230,19 +255,46 @@ class _BoardPainter extends CustomPainter {
           ..shader = const LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [Color(0x66000000), Color(0x00000000), Color(0x1AFFFFFF)],
-            stops: [0.0, 0.55, 1.0],
+            colors: [
+              Color(0x99000000),
+              Color(0x00000000),
+              Color(0x33FFFFFF),
+            ],
+            stops: [0.0, 0.6, 1.0],
           ).createShader(rect),
       );
       canvas.restore();
+
+      canvas.drawRRect(
+        pocket,
+        Paint()
+          ..color = const Color(0x1A000000)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = cell * 0.015,
+      );
     }
 
     canvas.drawRRect(
-      body.deflate(cell * 0.015),
+      body.deflate(cell * 0.02),
       Paint()
-        ..color = const Color(0xFFD4A85A)
+        ..shader = const LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Color(0xFFF5D8A8),
+            Color(0xFFE8C98A),
+          ],
+        ).createShader(Offset.zero & size)
         ..style = PaintingStyle.stroke
-        ..strokeWidth = cell * 0.04,
+        ..strokeWidth = cell * 0.055,
+    );
+
+    canvas.drawRRect(
+      body.deflate(cell * 0.025),
+      Paint()
+        ..color = Colors.white.withValues(alpha: 0.3)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = cell * 0.02,
     );
   }
 
@@ -254,23 +306,32 @@ class _BoardPainter extends CustomPainter {
     for (final point in points.skip(1)) {
       tube.lineTo(point.dx, point.dy);
     }
-    final width = cell * 0.52;
+    final width = cell * 0.58;
 
     canvas.drawPath(
-      tube.shift(Offset(cell * 0.02, cell * 0.045)),
+      tube.shift(Offset(cell * 0.025, cell * 0.055)),
       Paint()
-        ..color = const Color(0x553A2418)
+        ..color = const Color(0x663A2418)
         ..style = PaintingStyle.stroke
         ..strokeWidth = width
         ..strokeCap = StrokeCap.round
         ..strokeJoin = StrokeJoin.round
-        ..maskFilter = MaskFilter.blur(BlurStyle.normal, cell * 0.05),
+        ..maskFilter = MaskFilter.blur(BlurStyle.normal, cell * 0.06),
     );
 
     canvas.drawPath(
       tube,
       Paint()
-        ..color = hue
+        ..shader = RadialGradient(
+          center: const Alignment(-0.3, -0.3),
+          radius: 1.0,
+          colors: [
+            Color.lerp(hue, Colors.white, 0.15)!,
+            hue,
+            Color.lerp(hue, Colors.black, 0.1)!,
+          ],
+          stops: const [0.0, 0.5, 1.0],
+        ).createShader(Offset.zero & Size(cell * count, cell * count))
         ..style = PaintingStyle.stroke
         ..strokeWidth = width
         ..strokeCap = StrokeCap.round
@@ -278,11 +339,11 @@ class _BoardPainter extends CustomPainter {
     );
 
     canvas.drawPath(
-      tube.shift(Offset(-cell * 0.035, -cell * 0.045)),
+      tube.shift(Offset(-cell * 0.04, -cell * 0.05)),
       Paint()
-        ..color = Colors.white.withValues(alpha: 0.5)
+        ..color = Colors.white.withValues(alpha: 0.65)
         ..style = PaintingStyle.stroke
-        ..strokeWidth = width * 0.2
+        ..strokeWidth = width * 0.25
         ..strokeCap = StrokeCap.round
         ..strokeJoin = StrokeJoin.round,
     );
@@ -294,18 +355,35 @@ class _BoardPainter extends CustomPainter {
 
   void _dollop(Canvas canvas, Offset center, Color color, double radius, int seed) {
     canvas.drawCircle(
-      center + Offset(radius * 0.08, radius * 0.16),
+      center + Offset(radius * 0.1, radius * 0.18),
       radius,
       Paint()
-        ..color = const Color(0x553A2418)
-        ..maskFilter = MaskFilter.blur(BlurStyle.normal, radius * 0.24),
+        ..color = const Color(0x663A2418)
+        ..maskFilter = MaskFilter.blur(BlurStyle.normal, radius * 0.28),
     );
-    canvas.drawCircle(center, radius, Paint()..color = color);
+    
     canvas.drawCircle(
-      center + Offset(-radius * 0.28, -radius * 0.32),
-      radius * 0.36,
-      Paint()..color = Colors.white.withValues(alpha: 0.6),
+      center,
+      radius,
+      Paint()
+        ..shader = RadialGradient(
+          center: const Alignment(-0.35, -0.4),
+          radius: 1.0,
+          colors: [
+            Color.lerp(color, Colors.white, 0.2)!,
+            color,
+            Color.lerp(color, Colors.black, 0.15)!,
+          ],
+          stops: const [0.0, 0.5, 1.0],
+        ).createShader(Rect.fromCircle(center: center, radius: radius)),
     );
+    
+    canvas.drawCircle(
+      center + Offset(-radius * 0.3, -radius * 0.35),
+      radius * 0.42,
+      Paint()..color = Colors.white.withValues(alpha: 0.7),
+    );
+    
     _sugarOnDisc(canvas, center, radius, seed);
   }
 
