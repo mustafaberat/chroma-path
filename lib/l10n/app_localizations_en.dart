@@ -13,7 +13,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appTitle => 'ChromaPath: Connect Puzzle';
 
   @override
-  String get homeTagline => 'Connect every color.';
+  String get homeTagline => 'Fill the waffle.';
 
   @override
   String get play => 'Play';
@@ -28,7 +28,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get howToPlay => 'How to play';
 
   @override
-  String get howToLine => 'Connect two matching dots!';
+  String get howToLine => 'Connect matching flavors so the waffle fills up.';
 
   @override
   String get skip => 'Skip';
@@ -50,7 +50,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get nextLevel => 'Next serving';
 
   @override
-  String get levelClear => 'Waffle topped!';
+  String get levelClear => 'Waffle\'s full!';
+
+  @override
+  String get levelCompliment => 'Looks delicious!';
 
   @override
   String get allClear => 'All waffles topped!';
@@ -145,7 +148,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get resetAction => 'Reset';
 
   @override
-  String get boardLabel => 'Puzzle board';
+  String get boardLabel => 'Waffle';
 
   @override
   String get soundOn => 'Sound on';
@@ -163,7 +166,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get currentLevel => 'Current level';
 
   @override
-  String get clearBoard => 'Clear the board?';
+  String get clearBoard => 'Clear the waffle?';
 
   @override
   String get clearBoardYes => 'Clear';

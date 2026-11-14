@@ -53,6 +53,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get levelClear => 'Griglia piena';
 
   @override
+  String get levelCompliment => 'Sembra delizioso!';
+
+  @override
   String get allClear => 'Tutti i livelli sono pieni';
 
   @override

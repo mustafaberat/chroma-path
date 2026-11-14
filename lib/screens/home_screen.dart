@@ -10,6 +10,7 @@ import '../config/tokens.dart';
 import '../game/levels.dart';
 import '../l10n/app_localizations.dart';
 import '../widgets/banner_slot.dart';
+import '../widgets/chef_mascot.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -53,41 +54,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           const SizedBox(height: 12),
-                          const Center(child: _WaffleMotif()),
-                          const SizedBox(height: 20),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              for (final color in Palette.colors)
-                                Container(
-                                  width: 28,
-                                  height: 28,
-                                  margin: const EdgeInsets.only(right: 8),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    gradient: RadialGradient(
-                                      center: const Alignment(-0.35, -0.4),
-                                      radius: 0.9,
-                                      colors: [const Color(0xFFFFFBF6), color],
-                                      stops: const [0.05, 0.72],
-                                    ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: color.withValues(alpha: 0.3),
-                                        blurRadius: 6,
-                                        offset: const Offset(0, 3),
-                                      ),
-                                    ],
-                                  ),
-                                  child: CustomPaint(painter: _SugarPainter(color: color)),
-                                ),
-                            ],
-                          ),
+                          const Center(child: ChefMascot(size: 100)),
                           const SizedBox(height: 24),
                           Text('ChromaPath', style: theme.headlineLarge, textAlign: TextAlign.center),
                           const SizedBox(height: 4),
                           Text('Connect Puzzle', style: theme.titleLarge, textAlign: TextAlign.center),
-                          const SizedBox(height: 28),
+                          const SizedBox(height: 16),
+                          Text(l10n.homeTagline, style: theme.titleMedium, textAlign: TextAlign.center),
+                          const SizedBox(height: 24),
                           ListenableBuilder(
                             listenable: services.progress,
                             builder: (context, _) {
